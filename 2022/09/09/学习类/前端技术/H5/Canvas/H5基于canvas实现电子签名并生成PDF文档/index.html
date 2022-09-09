@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haizhilingyu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"content":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="前言电子签名通俗来说就是通过技术手段实现在电子文档上加载电子形式的签名，其作用类似于纸质合同上的手写签名或加盖的公章。虽然电子签名多年来合法性一直遭到质疑，但其在企业工作流审批、请柬、单据保全等场景应用广泛，最近的项目中就有这样一个手写签名并生成PDF文件的需求。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="H5基于canvas实现电子签名并生成PDF文档">
+<meta property="og:url" content="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/H5/Canvas/H5%E5%9F%BA%E4%BA%8Ecanvas%E5%AE%9E%E7%8E%B0%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D%E5%B9%B6%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3/index.html">
+<meta property="og:site_name" content="知识管理">
+<meta property="og:description" content="前言电子签名通俗来说就是通过技术手段实现在电子文档上加载电子形式的签名，其作用类似于纸质合同上的手写签名或加盖的公章。虽然电子签名多年来合法性一直遭到质疑，但其在企业工作流审批、请柬、单据保全等场景应用广泛，最近的项目中就有这样一个手写签名并生成PDF文件的需求。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/02d0ae583f3f4692be28339e6a6234eb~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp">
+<meta property="og:image" content="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/baf10d6559194e96bc5f9e5612d8e0b1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/35213da74a8042eca215e6e71510a545~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/48b4e14d68514b63a3844e15114ebb81~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp">
+<meta property="article:published_time" content="2022-09-09T14:13:53.000Z">
+<meta property="article:modified_time" content="2022-09-09T14:17:19.853Z">
+<meta property="article:author" content="海之领域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/02d0ae583f3f4692be28339e6a6234eb~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp">
+
+
+<link rel="canonical" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/H5/Canvas/H5%E5%9F%BA%E4%BA%8Ecanvas%E5%AE%9E%E7%8E%B0%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D%E5%B9%B6%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/H5/Canvas/H5%E5%9F%BA%E4%BA%8Ecanvas%E5%AE%9E%E7%8E%B0%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D%E5%B9%B6%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3/","path":"2022/09/09/学习类/前端技术/H5/Canvas/H5基于canvas实现电子签名并生成PDF文档/","title":"H5基于canvas实现电子签名并生成PDF文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>H5基于canvas实现电子签名并生成PDF文档 | 知识管理</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?6037b165182d63a21af484a3f6eaaacf"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知识管理" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知识管理</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日常、工作、生活知识记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">实现思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E7%AD%BE%E5%90%8D"><span class="nav-number">3.</span> <span class="nav-text">生成签名</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%9C%A8tsx%E4%B8%AD%E5%AE%9A%E4%B9%89canvas%E7%94%BB%E5%B8%83"><span class="nav-number">3.1.</span> <span class="nav-text">1. 在tsx中定义canvas画布</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%9A%E4%B9%89%E7%AD%BE%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2. 定义签名函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%B3%A8%E5%86%8C%E7%9B%91%E5%90%AC%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.3.</span> <span class="nav-text">3. 注册监听事件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3"><span class="nav-number">4.</span> <span class="nav-text">生成PDF文档</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%88%86%E9%A1%B5%E4%BD%8D%E7%BD%AE"><span class="nav-number">4.1.</span> <span class="nav-text">选择分页位置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="海之领域"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">海之领域</p>
+  <div class="site-description" itemprop="description">日常、工作、生活知识记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haizhilingyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haizhilingyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:haizhilingyu@gmail.com" title="E-Mail → mailto:haizhilingyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/H5/Canvas/H5%E5%9F%BA%E4%BA%8Ecanvas%E5%AE%9E%E7%8E%B0%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D%E5%B9%B6%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="海之领域">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知识管理">
+      <meta itemprop="description" content="日常、工作、生活知识记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="H5基于canvas实现电子签名并生成PDF文档 | 知识管理">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          H5基于canvas实现电子签名并生成PDF文档<a href="https://github.com/Haizhilingyu/Haizhilingyu.github.io/tree/main/source/_posts/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/H5/Canvas/H5%E5%9F%BA%E4%BA%8Ecanvas%E5%AE%9E%E7%8E%B0%E7%94%B5%E5%AD%90%E7%AD%BE%E5%90%8D%E5%B9%B6%E7%94%9F%E6%88%90PDF%E6%96%87%E6%A1%A3.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-09 22:13:53 / 修改时间：22:17:19" itemprop="dateCreated datePublished" datetime="2022-09-09T22:13:53+08:00">2022-09-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>电子签名通俗来说就是通过技术手段实现在电子文档上加载电子形式的签名，其作用类似于纸质合同上的手写签名或加盖的公章。虽然电子签名多年来合法性一直遭到质疑，但其在企业工作流审批、请柬、单据保全等场景应用广泛，最近的项目中就有这样一个手写签名并生成PDF文件的需求。</p>
+<span id="more"></span>
+<h1 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h1><ul>
+<li><ol>
+<li>使用canvas来实现手写签名的功能，然后将canvas转化为图片，贴在签名的位置；</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>将整个需要生成文档的dom区域使用html2canvas插件转成一张大图；</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>使用JsPDF插件将上述图片生成PDF文档；</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>对于文件内容较多的情况，需要合理选择分页位置；</li>
+</ol>
+</li>
+</ul>
+<h1 id="生成签名"><a href="#生成签名" class="headerlink" title="生成签名"></a>生成签名</h1><h2 id="1-在tsx中定义canvas画布"><a href="#1-在tsx中定义canvas画布" class="headerlink" title="1. 在tsx中定义canvas画布"></a>1. 在tsx中定义canvas画布</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">className</span>=<span class="string">&#123;styles.canvas&#125;</span> <span class="attr">ref</span>=<span class="string">&#123;canvasDom&#125;</span> <span class="attr">width</span>=<span class="string">&quot;350&quot;</span> <span class="attr">height</span>=<span class="string">&quot;150&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code>：Canvas的宽高必须要使用内联样式定义，这是因为Canvas标签有自己的默认宽高300px×150px。它内联样式定义的width和height是绘画区域（画布）实际宽度和高度，绘制的图形都是在这个上面。如果在style外链文件中定义其width和height，那么这个width和height是Canvas在浏览器中被渲染的高度和宽度。如果Canvas中没有直接定义width和height没或值不正确，就会被设置成默认值{width:300px，height:150px}。所以，如果你在style中外链文件中设置了canvas {width: 200px; height: 200px;}，却没有直接在canvas上定义画布宽高，那么此时你输出canvas.height 值依旧为150，canvas.width值依旧为300。也就是一块150×300的画布在200×200的区域渲染，因而图片会出现拉伸、变形等现象。</p>
+<h2 id="2-定义签名函数"><a href="#2-定义签名函数" class="headerlink" title="2. 定义签名函数"></a>2. 定义签名函数</h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">const <span class="attr">writing</span> = (</span><br><span class="line">   beginX: number,</span><br><span class="line">   beginY: number,</span><br><span class="line">   stopX: number,</span><br><span class="line">   stopY: number,</span><br><span class="line">   ctx: any,</span><br><span class="line"> ) =&gt; &#123;</span><br><span class="line">   ctx.beginPath()<span class="comment">;  // 开启一条新路径</span></span><br><span class="line">   <span class="attr">ctx.globalAlpha</span> = <span class="number">1</span><span class="comment">;  // 设置图片的透明度</span></span><br><span class="line">   <span class="attr">ctx.lineWidth</span> = <span class="number">3</span><span class="comment">;  // 设置线宽</span></span><br><span class="line">   <span class="attr">ctx.strokeStyle</span> = <span class="string">&#x27;red&#x27;</span><span class="comment">;  // 设置路径颜色</span></span><br><span class="line">   ctx.moveTo(beginX, beginY)<span class="comment">;  // 从(beginX, beginY)这个坐标点开始画图</span></span><br><span class="line">   ctx.lineTo(stopX, stopY)<span class="comment">;  // 定义从(beginX, beginY)到(stopX, stopY)的线条（该方法不会创建线条）</span></span><br><span class="line">   ctx.closePath()<span class="comment">;  // 创建该条路径</span></span><br><span class="line">   ctx.stroke()<span class="comment">;  // 实际地绘制出通过 moveTo() 和 lineTo() 方法定义的路径。默认颜色是黑色。</span></span><br><span class="line"> &#125;<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-注册监听事件"><a href="#3-注册监听事件" class="headerlink" title="3. 注册监听事件"></a>3. 注册监听事件</h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">let beginX: number, beginY: number<span class="comment">;</span></span><br><span class="line">const canvas: <span class="attr">HTMLCanvasElement</span> = canvasDom.current<span class="comment">;</span></span><br><span class="line">const <span class="attr">ctx</span> = canvas.getContext(<span class="string">&#x27;2d&#x27;</span>)<span class="comment">;</span></span><br><span class="line"><span class="attr">ctx.fillStyle</span> = <span class="string">&#x27;#fff&#x27;</span><span class="comment">;</span></span><br><span class="line">ctx.fillRect(0, 0, canvas.width, canvas.height)<span class="comment">;</span></span><br><span class="line">canvas.addEventListener(&#x27;touchstart&#x27;, function(event: any) &#123;</span><br><span class="line">  event.preventDefault()<span class="comment">; // 阻止在canvas画布上签名的时候页面跟着滚动</span></span><br><span class="line">  <span class="attr">beginX</span> = event.touches[<span class="number">0</span>].clientX - this.<span class="literal">off</span>setLeft<span class="comment">; </span></span><br><span class="line">  <span class="attr">beginY</span> = event.touches[<span class="number">0</span>].pageY - this.<span class="literal">off</span>setTop<span class="comment">;</span></span><br><span class="line">&#125;)<span class="comment">;</span></span><br><span class="line">canvas.addEventListener(&#x27;touchmove&#x27;, (event: any) =&gt; &#123;</span><br><span class="line">  event.preventDefault()<span class="comment">; // 阻止在canvas画布上签名的时候页面跟着滚动</span></span><br><span class="line">  <span class="attr">event</span> = event.touches[<span class="number">0</span>]<span class="comment">;</span></span><br><span class="line">  let <span class="attr">stopX</span> = event.clientX - canvas.<span class="literal">off</span>setLeft<span class="comment">;</span></span><br><span class="line">  let <span class="attr">stopY</span> = event.pageY - canvas.<span class="literal">off</span>setTop<span class="comment">;</span></span><br><span class="line">  writing(beginX, beginY, stopX, stopY, ctx)<span class="comment">;</span></span><br><span class="line">  <span class="attr">beginX</span> = stopX<span class="comment">; // 这一步很关键，需要不断更新起点，否则画出来的是射线簇</span></span><br><span class="line">  <span class="attr">beginY</span> = stopY<span class="comment">;</span></span><br><span class="line">&#125;)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code>：  </p>
+<ul>
+<li><ol>
+<li>在注册“touchstart”和“touchmove”事件时，需要阻止默认事件，否则页面会跟着手势上下滑动。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>移动端的每个触摸事件对象中都包括了touches这个属性，它用于描述位于屏幕上的所有手指的一个列表，获取当前事件对象我们习惯性的使用event &#x3D; event.touches[0],而在PC端则不需要这么操作。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>offsetLeft值跟offsetTop值跟父级元素没关系，而是跟其上一级的定位元素(除position:static外的所有定位如fixed,relative,absolute元素)有关系。若上一级定位元素都没有除position:staice外的定位，则这个偏移量是相对于body而言的。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>需要理清移动端事件对象的几个属性，⏬<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/02d0ae583f3f4692be28339e6a6234eb~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"> clientX&#x2F;clientY: 触摸位置距离当前body可视区域的x,y坐标;<br>   pageX&#x2F;pageY: 对于整个页面来说，触摸位置距离body左上角的x,y坐标，包括被scrollTop和scrollLeft的值；<br>   screenX&#x2F;screenY: 触摸位置距离显示器左边和顶部的x,y距离。<br>   所以，在获取结束点坐标的时候，如果当前页面没有出现滚动条，使用clientY和pageY计算差别不大，如果页面比较长，出现了滚动条，那么就必须要使用pageY来计算。clientX同理，但是移动端通常横向滚动的场景不多，所以用clientX来计算即可。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>在签名（touchmove）这个动作过程中，我们需要不断的更新起点位置，否则画出来是这样🔽 <img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/baf10d6559194e96bc5f9e5612d8e0b1~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"><br>   其实这个原理和微积分很相似，线段本质上就是由无穷多个小线段组成，宏观一点来看可以把线段当成一个个长度很小的小线段首尾相连构成。所以我一直觉得编程编到最后就是考验一个人的数学能力，交并集、逻辑思维、算法等都能看到数学的身影。最后生成签名如下： <img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/35213da74a8042eca215e6e71510a545~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"></li>
+</ol>
+</li>
+</ul>
+<h1 id="生成PDF文档"><a href="#生成PDF文档" class="headerlink" title="生成PDF文档"></a>生成PDF文档</h1><p>html2canvas是一款将HTML代码转换成Canvas的插件，因此需要用一个div包裹住需要打印的内容区域，获得这个dom节点。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html2Canvas</span>(dom, &#123;</span><br><span class="line">    allowTaint: true,</span><br><span class="line">    <span class="attribute">width</span>: dom.offsetWidth, <span class="comment">//设置获取到的canvas宽度</span></span><br><span class="line">    <span class="attribute">height</span>: dom.offsetHeight, <span class="comment">//设置获取到的canvas高度</span></span><br><span class="line">    <span class="attribute">x</span>: <span class="number">0</span>, <span class="comment">//页面在水平方向滚动的距离</span></span><br><span class="line">    <span class="attribute">y</span>: <span class="number">0</span>, <span class="comment">//页面在垂直方向滚动的距离</span></span><br><span class="line">   &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code>：此处需要设置width和height及x,y，否则当页面内容只有一页的时候没有问题，但是若页面内容有很多页的时候，就会出现生成的图片只有一小部分有内容的现象。问题就出现在这个配置参数上，若没有设置宽高，则默认只取当前视口的内容，丢弃掉其他超出当前视口的内容。<br>设置打印参数：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">const <span class="attr">print</span> = () =&gt; &#123;</span><br><span class="line">    let dom: <span class="attr">HTMLElement</span> = pdfDom.current<span class="comment">;</span></span><br><span class="line">    html2Canvas(dom, &#123;</span><br><span class="line">      allowTaint: true,</span><br><span class="line">      width: dom.offsetWidth, //设置获取到的canvas宽度</span><br><span class="line">      height: dom.offsetHeight, //设置获取到的canvas高度</span><br><span class="line">      x: 0, //页面在水平方向滚动的距离</span><br><span class="line">      y: 0, //页面在垂直方向滚动的距离</span><br><span class="line">    &#125;).then((canvas: HTMLCanvasElement) =&gt; &#123;</span><br><span class="line">      let <span class="attr">canvasWidth</span> = canvas.width<span class="comment">;</span></span><br><span class="line">      let <span class="attr">canvasHeight</span> = canvas.height<span class="comment">;</span></span><br><span class="line">      let <span class="attr">pageHeight</span> = (canvasWidth / <span class="number">592.28</span>) * <span class="number">841.89</span><span class="comment">; // 一页A4 pdf能显示的canvas高度</span></span><br><span class="line">      let <span class="attr">imgWidth</span> = <span class="number">595.28</span><span class="comment">; // 设置图片宽度和A4纸宽度相等</span></span><br><span class="line">      let <span class="attr">imgHeight</span> = (<span class="number">592.28</span> / canvasWidth) * canvasHeight<span class="comment">;//等比例换算成A4纸的高度</span></span><br><span class="line">      let <span class="attr">totalHeight</span> = imgHeight<span class="comment">; // 需要打印的图片总高度，初始状态和图片高度相等</span></span><br><span class="line">      let <span class="attr">pageData</span> = canvas.toDataURL(<span class="string">&#x27;image/png&#x27;</span>, <span class="number">1.0</span>)<span class="comment">;</span></span><br><span class="line">      let <span class="attr">PDF</span> = new JsPDF(<span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;pt&#x27;</span>, <span class="string">&#x27;a4&#x27;</span>, <span class="literal">true</span>)<span class="comment">;</span></span><br><span class="line">      if (totalHeight &lt; pageHeight) &#123; //</span><br><span class="line">        PDF.addImage(pageData, &#x27;JPEG&#x27;, 0, 0, imgWidth, imgHeight)<span class="comment">; // 从顶部开始打印</span></span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        let <span class="attr">top</span> = <span class="number">0</span><span class="comment">;   // 打印初始区域</span></span><br><span class="line">        while (totalHeight &gt; 0) &#123;</span><br><span class="line">          PDF.addImage(pageData, &#x27;JPEG&#x27;, 0, top, imgWidth, imgHeight)<span class="comment">;  // 从图片顶部往下top位置开始打印</span></span><br><span class="line">          totalHeight <span class="attr">-</span>= pageHeight<span class="comment">;</span></span><br><span class="line">          top <span class="attr">-</span>= <span class="number">841.89</span><span class="comment">;</span></span><br><span class="line">          if (totalHeight &gt; 0) &#123;</span><br><span class="line">            PDF.addPage()<span class="comment">;</span></span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      PDF.save(&#x27;test.pdf&#x27;)<span class="comment">;</span></span><br><span class="line">    &#125;)<span class="comment">;</span></span><br><span class="line">  &#125;<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="选择分页位置"><a href="#选择分页位置" class="headerlink" title="选择分页位置"></a>选择分页位置</h2><p>按照上述步骤生成了一份PDF文档，但是当PDF页数有很多的时候，会有这样的问题⏬ <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/48b4e14d68514b63a3844e15114ebb81~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp"> 可以看到，分页的时候从这段文字这里懒腰截断了。这显然不是我们想要看到的效果，如何解决这个问题呢？🤔</p>
+<ul>
+<li>PDF文档页数较少的情况 可以在开发测试的时候预先在将要分页的地方插入一个padding，就是提前预留分页位置</li>
+<li>PDF文档页数较多 对于这种情况，笔者尝试遍历要打印的dom节点的子节点，将每一页所能打印的dom节点高度累加，若超过了页面所能承载的最大高度，则将最后一个节点增加padding，打印完毕将样式还原。这种方法因为要计算每个dom节点的高度，非常耗性能，也要求页面dom元素的颗粒度较细，否则会出现一个页面有大块空白，完全无法模拟出word生成pdf的那种效果，所以就不展开讨论了。如若有读者有比较好的解放方案，欢迎不吝赐教，感谢~❤️</li>
+</ul>
+<p>转载自：<a target="_blank" rel="noopener" href="https://juejin.cn/post/6901273585428463624">https://juejin.cn/post/6901273585428463624</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/" rel="prev" title="使用枚举来巧妙干掉if-else，使代码更加优雅">
+                  <i class="fa fa-chevron-left"></i> 使用枚举来巧妙干掉if-else，使代码更加优雅
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">海之领域</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">24k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">44 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
