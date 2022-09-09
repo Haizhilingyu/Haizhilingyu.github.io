@@ -1,5 +1,5 @@
 ---
-title: 【笔记-前端-ast】Parsing JavaScript with JavaScript
+title: Parsing JavaScript with JavaScript
 date: 2022-09-09 20:25:27
 categories:
     - 学习类

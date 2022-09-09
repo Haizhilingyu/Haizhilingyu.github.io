@@ -162,3 +162,5 @@ public static void main(String[] args) {
 # 最后
 
 以上是通过枚举来巧妙干掉if-else的方案，对于减少 if-else 还有很多有趣的解决方案（如：状态设计模式等），感兴趣的朋友去查阅相关的资料。
+
+转载自： https://www.toutiao.com/i6847406631983153672
