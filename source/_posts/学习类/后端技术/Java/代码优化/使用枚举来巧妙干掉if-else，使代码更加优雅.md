@@ -13,7 +13,7 @@ tags:
 **导读：**本文通过一个简单的例子来展示如何通过枚举巧妙地干掉if-else，使代码看起来更佳优雅。
 
 **场景：** 当我们接收到一些数据需要对其进行处理时，由于它们来自于不同的渠道（如：腾讯，头条），不同渠道所需的处理方式不同，下面我们写一个简单Demo来实现该的场景。
-
+<!-- more -->
 ![](https://p3-sign.toutiaoimg.com/dfic-imagehandler/a505ff21-85dc-420d-a512-6d501cf656ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=WnH8DbFJPM2NTftVuODu9PypsIE%3D)
 
 # 解决思路

@@ -14,7 +14,7 @@ tags:
 Over the weekend I started working on [llamaduck](https://github.com/Swizec/llamaduck)\- a simple tool that aims to figure out whether your code will run on the newly released node 0.6.0. Eventually, it might be able to perform other compatibility assessment tasks as well, but I’m focusing on simple stuff first.
 
 Or at least I thought it was simple.
-
+<!-- more -->
 The [list of API changes since 0.4.x](https://github.com/joyent/node/wiki/API-changes-between-v0.4-and-v0.6) doesn’t seem that long and it should be easy enough to digest. But as it turns out, I spent almost all of Sunday just figuring out how to turn javascript into a beautiful analyzable [AST](http://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 If you don’t know what an AST is – it’s a so-called abstract syntax tree, which means it should look identical regardless of what the actual syntax is. Although it will differ for different languages. So a CoffeeScript AST should look the same as JavaScript, but Python’s will differ.
