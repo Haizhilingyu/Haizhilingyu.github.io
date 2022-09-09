@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haizhilingyu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"content":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="导读：本文通过一个简单的例子来展示如何通过枚举巧妙地干掉if-else，使代码看起来更佳优雅。 场景： 当我们接收到一些数据需要对其进行处理时，由于它们来自于不同的渠道（如：腾讯，头条），不同渠道所需的处理方式不同，下面我们写一个简单Demo来实现该的场景。  解决思路1、首先构建一个 GeneralChannelRule 基础规则抽象类，定义一个抽象方法process()，不同的渠道都需要实现该">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用枚举来巧妙干掉if-else，使代码更加优雅">
+<meta property="og:url" content="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/index.html">
+<meta property="og:site_name" content="知识管理">
+<meta property="og:description" content="导读：本文通过一个简单的例子来展示如何通过枚举巧妙地干掉if-else，使代码看起来更佳优雅。 场景： 当我们接收到一些数据需要对其进行处理时，由于它们来自于不同的渠道（如：腾讯，头条），不同渠道所需的处理方式不同，下面我们写一个简单Demo来实现该的场景。  解决思路1、首先构建一个 GeneralChannelRule 基础规则抽象类，定义一个抽象方法process()，不同的渠道都需要实现该">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://p3-sign.toutiaoimg.com/dfic-imagehandler/a505ff21-85dc-420d-a512-6d501cf656ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=WnH8DbFJPM2NTftVuODu9PypsIE=">
+<meta property="og:image" content="https://p3-sign.toutiaoimg.com/dfic-imagehandler/afed0620-5bb9-4320-a663-cb87f868303f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=HoICSU9qcH+Ex2bny3B2HWvbMEg=">
+<meta property="article:published_time" content="2022-09-09T12:51:32.000Z">
+<meta property="article:modified_time" content="2022-09-09T12:55:30.004Z">
+<meta property="article:author" content="海之领域">
+<meta property="article:tag" content="代码优化">
+<meta property="article:tag" content="减少ifelse">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p3-sign.toutiaoimg.com/dfic-imagehandler/a505ff21-85dc-420d-a512-6d501cf656ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=WnH8DbFJPM2NTftVuODu9PypsIE=">
+
+
+<link rel="canonical" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/","path":"2022/09/09/学习类/后端技术/Java/代码优化/使用枚举来巧妙干掉if-else，使代码更加优雅/","title":"使用枚举来巧妙干掉if-else，使代码更加优雅"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用枚举来巧妙干掉if-else，使代码更加优雅 | 知识管理</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?6037b165182d63a21af484a3f6eaaacf"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知识管理" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知识管理</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日常、工作、生活知识记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">解决思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">新的思路</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="海之领域"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">海之领域</p>
+  <div class="site-description" itemprop="description">日常、工作、生活知识记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haizhilingyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haizhilingyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:haizhilingyu@gmail.com" title="E-Mail → mailto:haizhilingyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="海之领域">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知识管理">
+      <meta itemprop="description" content="日常、工作、生活知识记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用枚举来巧妙干掉if-else，使代码更加优雅 | 知识管理">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用枚举来巧妙干掉if-else，使代码更加优雅<a href="https://github.com/Haizhilingyu/Haizhilingyu.github.io/tree/main/source/_posts/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-09 20:51:32 / 修改时间：20:55:30" itemprop="dateCreated datePublished" datetime="2022-09-09T20:51:32+08:00">2022-09-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">学习类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">后端技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" itemprop="url" rel="index"><span itemprop="name">代码优化</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>导读：</strong>本文通过一个简单的例子来展示如何通过枚举巧妙地干掉if-else，使代码看起来更佳优雅。</p>
+<p><strong>场景：</strong> 当我们接收到一些数据需要对其进行处理时，由于它们来自于不同的渠道（如：腾讯，头条），不同渠道所需的处理方式不同，下面我们写一个简单Demo来实现该的场景。</p>
+<p><img src="https://p3-sign.toutiaoimg.com/dfic-imagehandler/a505ff21-85dc-420d-a512-6d501cf656ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=WnH8DbFJPM2NTftVuODu9PypsIE="></p>
+<h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><p>1、首先构建一个 GeneralChannelRule 基础规则抽象类，定义一个抽象方法process()，不同的渠道都需要实现该抽象方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public abstract class GeneralChannelRule &#123;</span><br><span class="line"> public abstract void process();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、编写一个腾讯的规则类，定义具体对于腾讯渠道数据的处理逻辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class TencentChannelRule extends GeneralChannelRule</span><br><span class="line"> 		@Override</span><br><span class="line">    public void process() &#123;</span><br><span class="line">        // Tencent处理逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、编写一个头条的规则类，定义具体对于头条数据的处理逻辑</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class TouTiaoChannelRule extends GeneralChannelRule</span><br><span class="line"> 		@Override</span><br><span class="line">    public void process() &#123;</span><br><span class="line">        // TouTiao处理逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>4、建立一个简单的枚举类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public enum ChannelRuleEnum &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 头条</span><br><span class="line">     */</span><br><span class="line">    TOUTIAO(&quot;TOUTIAO&quot;),</span><br><span class="line">    /**</span><br><span class="line">     * 腾讯</span><br><span class="line">     */</span><br><span class="line">    TENCENT(&quot;TENCENT&quot;),</span><br><span class="line">    ;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>5、使用规则对数据进行处理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        //这里我们模拟接收到的数据，其渠道为为TOUTIAO，来自头条的数据</span><br><span class="line">        String sign = &quot;TOUTIAO&quot;;</span><br><span class="line">        GeneralChannelRule rule;</span><br><span class="line">        //根据对应渠道获取对应的具体规则实现类</span><br><span class="line">        if (ChannelRuleEnum.TENCENT.code.equals(sign)) &#123;</span><br><span class="line">            rule = new TencentChannelRule();</span><br><span class="line">        &#125; else if (ChannelRuleEnum.TOUTIAO.code.equals(sign)) &#123;</span><br><span class="line">            rule = new TouTiaoChannelRule();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            //匹配不到</span><br><span class="line">        &#125;</span><br><span class="line">  			//执行</span><br><span class="line">        rule.process();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解析</strong>：如果通过上面的方式，则存在则两个缺点。</p>
+<ul>
+<li>当我们需要新增新的渠道的时候，需要对main方法中的逻辑进行修改调整。这违背了设计模式中的开放封闭规则。</li>
+</ul>
+<blockquote>
+<p>开放封闭原bai则的核心的思想是软件实体是可扩du展，而不可zhi修改的。也就是说，对扩展是开dao放的，而对修改是封闭的</p>
+</blockquote>
+<ul>
+<li>新增渠道后，修改代码会产生大量的if else，不太优雅。</li>
+</ul>
+<p>为了解决以上的两个问题，我们可以<strong>借助枚举类来巧妙优化</strong>。</p>
+<p><img src="https://p3-sign.toutiaoimg.com/dfic-imagehandler/afed0620-5bb9-4320-a663-cb87f868303f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=HoICSU9qcH+Ex2bny3B2HWvbMEg="></p>
+<h1 id="新的思路"><a href="#新的思路" class="headerlink" title="新的思路"></a>新的思路</h1><p>1、下面我们调整一下枚举类，增加一个GeneralChannelRule属性，并且给对应渠道构建对应的GeneralChannelRule实现类，新增一个match() 匹配方法。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public enum ChannelRuleEnum &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 头条</span><br><span class="line">     */</span><br><span class="line">    TOUTIAO(&quot;TOUTIAO&quot;,new TouTiaoChannelRule()),</span><br><span class="line">    /**</span><br><span class="line">     * 腾讯</span><br><span class="line">     */</span><br><span class="line">    TENCENT(&quot;TENCENT&quot;,new TencentChannelRule()),</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">    public String name;</span><br><span class="line"></span><br><span class="line">    public GeneralChannelRule channel;</span><br><span class="line"></span><br><span class="line">    ChannelRuleEnum(String name, GeneralChannelRule channel) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  //匹配</span><br><span class="line">    public static ChannelRuleEnum match(String name)&#123;</span><br><span class="line">        ChannelRuleEnum[] values = ChannelRuleEnum.values();</span><br><span class="line">        for (ChannelRuleEnum value : values) &#123;</span><br><span class="line">            if(value.name.equals(name))&#123;</span><br><span class="line">                return value;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public GeneralChannelRule getChannel() &#123;</span><br><span class="line">        return channel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2、改写程序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        String sign = &quot;TOUTIAO&quot;;</span><br><span class="line">        ChannelRuleEnum channelRule = ChannelRuleEnum.match(sign);</span><br><span class="line">        GeneralChannelRule rule = channelRule.channel;</span><br><span class="line">        rule.process(sign);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>解析：</strong>通过使用枚举类，在枚举中将 key 与 规则具体实现进行绑定。通过改变：</p>
+<ul>
+<li>可以减少if -else使得代码更加优雅</li>
+<li>如果需要新增渠道，我们只需要在编写具体规则实现类并继承GeneralChannelRule抽象类，并在枚举类中新增的枚举，而不需要改动到原先的任何代码。这符合了开发封闭原则。</li>
+</ul>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>以上是通过枚举来巧妙干掉if-else的方案，对于减少 if-else 还有很多有趣的解决方案（如：状态设计模式等），感兴趣的朋友去查阅相关的资料。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" rel="tag"># 代码优化</a>
+              <a href="/tags/%E5%87%8F%E5%B0%91ifelse/" rel="tag"># 减少ifelse</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/" rel="prev" title="Parsing JavaScript with JavaScript">
+                  <i class="fa fa-chevron-left"></i> Parsing JavaScript with JavaScript
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">海之领域</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">19k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

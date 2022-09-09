@@ -1,74 +1,376 @@
-<?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>Parsing JavaScript with JavaScript</title>
-    <url>/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>【笔记-前端-ast】Parsing JavaScript with JavaScript</title>
-    <url>/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/Parsing%20JavaScript%20with%20JavaScript/</url>
-    <content><![CDATA[<p>Over the weekend I started working on <a href="https://github.com/Swizec/llamaduck">llamaduck</a>- a simple tool that aims to figure out whether your code will run on the newly released node 0.6.0. Eventually, it might be able to perform other compatibility assessment tasks as well, but I’m focusing on simple stuff first.</p>
-<p>Or at least I thought it was simple.</p>
-<p>The <a href="https://github.com/joyent/node/wiki/API-changes-between-v0.4-and-v0.6">list of API changes since 0.4.x</a> doesn’t seem that long and it should be easy enough to digest. But as it turns out, I spent almost all of Sunday just figuring out how to turn javascript into a beautiful analyzable <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>.</p>
-<p>If you don’t know what an AST is – it’s a so-called abstract syntax tree, which means it should look identical regardless of what the actual syntax is. Although it will differ for different languages. So a CoffeeScript AST should look the same as JavaScript, but Python’s will differ.</p>
-<h2 id="JavaScript-Alterations-and-Changes"><a href="#JavaScript-Alterations-and-Changes" class="headerlink" title="JavaScript Alterations and Changes"></a>JavaScript Alterations and Changes</h2><p>There are so many JavaScript alterations and changes that one may need to make as they work through the program that it is undoubtedly challenging for some people to keep up with precisely what they are supposed to do to take care of things like this. </p>
-<p>What is known is that JavaScript alterations and changes can make life a lot more challenging for you in the short term, but it will pay off with a better product in the long run. </p>
-<p>What I discovered was that there were a lot of changes that needed to be made to get JavaScript to line up just the way that I wanted it to. There are so many small and technical aspects of this kind of coding that need to be adhered to down to the letter, and it is certainly not easy to pull it off until one has a lot of time to sit down and figure out what they need to do. </p>
-<p>JavaScript remains the dominant language used by computer programmers to put their materials out onto the Internet, so it made a lot of sense to me to start using this as a primary tool to get my own work done as well. I have continued to rely on JavaScript for projects both large and small, and I know that the only way that I get the most possible value out of it is to use it in ways that are effective for my customers. </p>
-<p>The increased use of JavaScript for all programmers is something that has led me to believe that I must continue working on ways to make the most out of my time with this program and the skills that I know can be applied in the best ways possible to get my desired results. </p>
-<p>When running <a href="https://dzone.com/articles/javascript-quiz-11">JavaScript</a> through the actual JavaScript program, it is common for programmers to run into some common issues. There are lines of exceptions that may appear at times, and there are other situations that arise which make it obvious that a certain piece of code is just not going to work as desired. If you run into that problem, just know that this is what the process is all about. Running the JavaScript through the program first is a great way to make sure those errors and omissions are eliminated from the final product. </p>
-<p>Look over every piece of this very carefully and make sure you understand what you are looking at. You may just discover that there is a lot more that you could be doing to help out your users after all. </p>
-<p>My research came up with <a href="https://dzone.com/articles/javascript-quiz-9">three options</a>:</p>
-<ol>
-<li><p>Take a parser generator and a JavaScript grammar, and hope for the best</p>
-</li>
-<li><p><a href="http://www.jslint.com/">JSLint</a> has a parser … somewhere around line 2000</p>
-</li>
-<li><p>Uglify-JS supposedly has a parser too</p>
-</li>
-</ol>
-<p>The only viable option was uglify-js. It’s a neatly packaged node.js module that does a bit more than I need, but at least it’s got an easy-to-use parser with an exposed API interface.</p>
-<h2 id="Score"><a href="#Score" class="headerlink" title="Score!"></a>Score!</h2><p>Here’s an example of a file that outputs its own <a href="https://dzone.com/articles/javascript-prototypal-inheritance">AST</a> to give you a feel for what I’m talking about:</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> parser = <span class="built_in">require</span>(<span class="string">&#x27;uglify-js&#x27;</span>).<span class="property">parser</span>;</span><br><span class="line"><span class="keyword">var</span> util = <span class="built_in">require</span>(<span class="string">&#x27;util&#x27;</span>);</span><br><span class="line"> </span><br><span class="line">(<span class="keyword">function</span> get\_ast (path, callback) &#123;</span><br><span class="line">    <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>).<span class="title function_">readFile</span>(path, <span class="string">&#x27;utf-8&#x27;</span>, <span class="keyword">function</span> (<span class="params">err, data</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</span><br><span class="line"> </span><br><span class="line">        <span class="title function_">callback</span>(parser.<span class="title function_">parse</span>(data));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)(<span class="string">&#x27;./example.js&#x27;</span>, <span class="keyword">function</span> (<span class="params">data</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(util.<span class="title function_">inspect</span>(data, <span class="literal">true</span>, <span class="literal">null</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.2.0">
 
-<p>The file parses itself and outputs a tree encoded as a <a href="https://dzone.com/articles/javascript-module-system">javascript array</a> (scroll past the insanity, there’s a bit more text there):</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">[ <span class="string">&#x27;toplevel&#x27;</span>,</span><br><span class="line">  [ [ <span class="string">&#x27;var&#x27;</span>,</span><br><span class="line">      [ [ <span class="string">&#x27;parser&#x27;</span>,</span><br><span class="line">          [ <span class="string">&#x27;dot&#x27;</span>,</span><br><span class="line">            [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">              [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;require&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">              [ [ <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;uglify-js&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                [length]: <span class="number">1</span> ],</span><br><span class="line">              [length]: <span class="number">3</span> ],</span><br><span class="line">            <span class="string">&#x27;parser&#x27;</span>,</span><br><span class="line">            [length]: <span class="number">3</span> ],</span><br><span class="line">          [length]: <span class="number">2</span> ],</span><br><span class="line">        [length]: <span class="number">1</span> ],</span><br><span class="line">      [length]: <span class="number">2</span> ],</span><br><span class="line">    [ <span class="string">&#x27;var&#x27;</span>,</span><br><span class="line">      [ [ <span class="string">&#x27;util&#x27;</span>,</span><br><span class="line">          [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">            [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;require&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">            [ [ <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;util&#x27;</span>, [length]: <span class="number">2</span> ], [length]: <span class="number">1</span> ],</span><br><span class="line">            [length]: <span class="number">3</span> ],</span><br><span class="line">          [length]: <span class="number">2</span> ],</span><br><span class="line">        [length]: <span class="number">1</span> ],</span><br><span class="line">      [length]: <span class="number">2</span> ],</span><br><span class="line">    [ <span class="string">&#x27;stat&#x27;</span>,</span><br><span class="line">      [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">        [ <span class="string">&#x27;function&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;get_ast&#x27;</span>,</span><br><span class="line">          [ <span class="string">&#x27;path&#x27;</span>, <span class="string">&#x27;callback&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">          [ [ <span class="string">&#x27;stat&#x27;</span>,</span><br><span class="line">              [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                [ <span class="string">&#x27;dot&#x27;</span>,</span><br><span class="line">                  [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                    [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;require&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                    [ [ <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;fs&#x27;</span>, [length]: <span class="number">2</span> ], [length]: <span class="number">1</span> ],</span><br><span class="line">                    [length]: <span class="number">3</span> ],</span><br><span class="line">                  <span class="string">&#x27;readFile&#x27;</span>,</span><br><span class="line">                  [length]: <span class="number">3</span> ],</span><br><span class="line">                [ [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;path&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                  [ <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;utf-8&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                  [ <span class="string">&#x27;function&#x27;</span>,</span><br><span class="line">                    <span class="literal">null</span>,</span><br><span class="line">                    [ <span class="string">&#x27;err&#x27;</span>, <span class="string">&#x27;data&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                    [ [ <span class="string">&#x27;if&#x27;</span>,</span><br><span class="line">                        [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;err&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                        [ <span class="string">&#x27;throw&#x27;</span>,</span><br><span class="line">                          [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;err&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                          [length]: <span class="number">2</span> ],</span><br><span class="line">                        <span class="literal">undefined</span>,</span><br><span class="line">                        [length]: <span class="number">4</span> ],</span><br><span class="line">                      [ <span class="string">&#x27;stat&#x27;</span>,</span><br><span class="line">                        [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                          [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;callback&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                          [ [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                              [ <span class="string">&#x27;dot&#x27;</span>,</span><br><span class="line">                                [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;parser&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                                <span class="string">&#x27;parse&#x27;</span>,</span><br><span class="line">                                [length]: <span class="number">3</span> ],</span><br><span class="line">                              [ [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;data&#x27;</span>, [length]: <span class="number">2</span> ], [length]: <span class="number">1</span> ],</span><br><span class="line">                              [length]: <span class="number">3</span> ],</span><br><span class="line">                            [length]: <span class="number">1</span> ],</span><br><span class="line">                          [length]: <span class="number">3</span> ],</span><br><span class="line">                        [length]: <span class="number">2</span> ],</span><br><span class="line">                      [length]: <span class="number">2</span> ],</span><br><span class="line">                    [length]: <span class="number">4</span> ],</span><br><span class="line">                  [length]: <span class="number">3</span> ],</span><br><span class="line">                [length]: <span class="number">3</span> ],</span><br><span class="line">              [length]: <span class="number">2</span> ],</span><br><span class="line">            [length]: <span class="number">1</span> ],</span><br><span class="line">          [length]: <span class="number">4</span> ],</span><br><span class="line">        [ [ <span class="string">&#x27;string&#x27;</span>, <span class="string">&#x27;./example.js&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">          [ <span class="string">&#x27;function&#x27;</span>,</span><br><span class="line">            <span class="literal">null</span>,</span><br><span class="line">            [ <span class="string">&#x27;data&#x27;</span>, [length]: <span class="number">1</span> ],</span><br><span class="line">            [ [ <span class="string">&#x27;stat&#x27;</span>,</span><br><span class="line">                [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                  [ <span class="string">&#x27;dot&#x27;</span>,</span><br><span class="line">                    [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;console&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                    <span class="string">&#x27;log&#x27;</span>,</span><br><span class="line">                    [length]: <span class="number">3</span> ],</span><br><span class="line">                  [ [ <span class="string">&#x27;call&#x27;</span>,</span><br><span class="line">                      [ <span class="string">&#x27;dot&#x27;</span>,</span><br><span class="line">                        [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;util&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                        <span class="string">&#x27;inspect&#x27;</span>,</span><br><span class="line">                        [length]: <span class="number">3</span> ],</span><br><span class="line">                      [ [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;data&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                        [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;true&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                        [ <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;null&#x27;</span>, [length]: <span class="number">2</span> ],</span><br><span class="line">                        [length]: <span class="number">3</span> ],</span><br><span class="line">                      [length]: <span class="number">3</span> ],</span><br><span class="line">                    [length]: <span class="number">1</span> ],</span><br><span class="line">                  [length]: <span class="number">3</span> ],</span><br><span class="line">                [length]: <span class="number">2</span> ],</span><br><span class="line">              [length]: <span class="number">1</span> ],</span><br><span class="line">            [length]: <span class="number">4</span> ],</span><br><span class="line">          [length]: <span class="number">2</span> ],</span><br><span class="line">        [length]: <span class="number">3</span> ],</span><br><span class="line">      [length]: <span class="number">2</span> ],</span><br><span class="line">    [length]: <span class="number">3</span> ],</span><br><span class="line">  [length]: <span class="number">2</span> ]</span><br></pre></td></tr></table></figure>
 
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>Now we have a simple tree we can <a href="https://dzone.com/articles/javascript-attacks-in-webviews">recursively analyze</a> and look for incompatibilities. But before anything really practical can be done I need to figure out how to track <a href="http://en.wikipedia.org/wiki/Scope_%2528programming%2529">variable scope</a>. That’s really the hard bit because the code needs to check when variables become a critical section and then confirm that they do in fact eventually get used in a critical way.</p>
-<p>But once that nut is cracked <a href="https://github.com/Swizec/llamaduck">llamaduck</a> will be a neat little tool useful for many things.</p>
-<p>If you’ve got some coding inclination, I’d love a helping hand over at the <a href="https://github.com/Swizec/llamaduck">llamaduck github repo</a>.</p>
-<p>Related articles</p>
-<ul>
-<li><p><a href="http://coding.smashingmagazine.com/2011/10/27/lessons-from-a-review-of-javascript-code/">Lessons From A Review Of JavaScript Code</a> (coding.smashingmagazine.com)</p>
-</li>
-<li><p><a href="http://leuksman.com/log/2011/09/29/parserplayground-partial-internals-update/">ParserPlayground partial internals update</a> (leuksman.com)</p>
-</li>
-<li><p><a href="http://googleclosure.wordpress.com/2011/08/27/google-closure-introduction/">Google Closure Introduction</a> (googleclosure.wordpress.com)</p>
-</li>
-<li><p><a href="http://olabini.com/blog/2011/11/announcing-jescov-javascript-code-coverage/">Announcing JesCov – JavaScript code coverage</a> (olabini.com)</p>
-</li>
-<li><p><a href="http://www.mindscapehq.com/blog/index.php/2011/07/21/polyglot-programming-some-lessons-learned/">Polyglot programming – combining functional, dynamic and imperative languages</a> (mindscapehq.com)</p>
-</li>
-</ul>
-<p>转载自：<a href="https://dzone.com/articles/parsing-javascript-javascript">https://dzone.com/articles/parsing-javascript-javascript</a></p>
-]]></content>
-      <categories>
-        <category>学习类</category>
-        <category>前端技术</category>
-        <category>Javascript</category>
-      </categories>
-      <tags>
-        <tag>javascript</tag>
-        <tag>ast</tag>
-        <tag>提取元素</tag>
-        <tag>转换</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【笔记-工具】打造一套知识笔记管理系统</title>
-    <url>/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<h2 id="什么是知识管理系统？"><a href="#什么是知识管理系统？" class="headerlink" title="什么是知识管理系统？"></a><strong>什么是知识管理系统？</strong></h2><p>我们先不回答这个问题，直接上个场景~</p>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haizhilingyu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"content":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="什么是知识管理系统？我们先不回答这个问题，直接上个场景~ 假如你床头有10本书，你要在其中找到一本书，你会怎么找？ 你可能会说，扫一眼就找到了啊。 但是，假如你现在身处世界上最大的图书馆：美国国会图书馆，藏书超2.1亿本，现在你想在里边找到某一本书，请问你如何找？ 一本一本翻吗？累死你，2.1亿这个数字我给大家换算了一下，把2.1亿本书铺起来可绕地球近两圈。 不仅仅找书，图书馆每天还要在其中处理上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【笔记-工具】打造一套知识笔记管理系统">
+<meta property="og:url" content="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="知识管理">
+<meta property="og:description" content="什么是知识管理系统？我们先不回答这个问题，直接上个场景~ 假如你床头有10本书，你要在其中找到一本书，你会怎么找？ 你可能会说，扫一眼就找到了啊。 但是，假如你现在身处世界上最大的图书馆：美国国会图书馆，藏书超2.1亿本，现在你想在里边找到某一本书，请问你如何找？ 一本一本翻吗？累死你，2.1亿这个数字我给大家换算了一下，把2.1亿本书铺起来可绕地球近两圈。 不仅仅找书，图书馆每天还要在其中处理上">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-9ed67ad17ea76244da44937419c4be22_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-9ed67ad17ea76244da44937419c4be22_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-29787aace0e47868c4b7b7120d11282d_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-29787aace0e47868c4b7b7120d11282d_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-61fdb6c02c0328fbbe833308ea6fed17_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-61fdb6c02c0328fbbe833308ea6fed17_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-bc1f631278260826362d9232e502c2f0_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-bc1f631278260826362d9232e502c2f0_1440w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-2d8ceffb24a325e9f722bccb17039faa_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-2d8ceffb24a325e9f722bccb17039faa_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-603637a4580259049585b12756f242e4_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-603637a4580259049585b12756f242e4_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-6645f5973db98026018e81d254a3a5b1_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-6645f5973db98026018e81d254a3a5b1_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-ed08ad30168db5cec861a1804ead7ae7_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-ed08ad30168db5cec861a1804ead7ae7_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-c35e785dbc0171229ece31b4b655ecf9_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-c35e785dbc0171229ece31b4b655ecf9_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-d4da044d35bbf26f6620452c9e6a6d3b_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-d4da044d35bbf26f6620452c9e6a6d3b_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-868ef7fb670138e700c8933a7ddf42cf_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-868ef7fb670138e700c8933a7ddf42cf_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-f1ed10943c450b8f2851275605789d69_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-f1ed10943c450b8f2851275605789d69_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-411cab1d4b722b029103e30c329b85ad_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-411cab1d4b722b029103e30c329b85ad_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-4e80d6c4f9e4a3b50d1b1bbb682bf5dd_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-4e80d6c4f9e4a3b50d1b1bbb682bf5dd_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-145d0a2b2cbb38c9d7ed7fe101d2f1dc_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-145d0a2b2cbb38c9d7ed7fe101d2f1dc_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-9064a7d93fb88d3580b2486e3f1c063d_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-9064a7d93fb88d3580b2486e3f1c063d_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-d456b432a51f79480296d6c8a9081474_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-d456b432a51f79480296d6c8a9081474_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-239f74cc80a691b998ea249a278b24c8_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-239f74cc80a691b998ea249a278b24c8_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-b02bf1c6a1c11a52cb54cbdc0f290377_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-b02bf1c6a1c11a52cb54cbdc0f290377_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-9bcc6a2ebfa8de026d9da30da6f71f3b_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-9bcc6a2ebfa8de026d9da30da6f71f3b_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-474e7891482456b0489c2bfae176ecb4_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-474e7891482456b0489c2bfae176ecb4_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-2c1c4f004f745609be9dc06c2619877d_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-2c1c4f004f745609be9dc06c2619877d_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-5d31ffcbcd95ffbb02e0bf68be63e9d1_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-5d31ffcbcd95ffbb02e0bf68be63e9d1_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-404a995970003259b8ce54e40dada8fb_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-404a995970003259b8ce54e40dada8fb_1440w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-0448e2c0d8f63787a83356320a9c97d6_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-0448e2c0d8f63787a83356320a9c97d6_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-d1c0ed64b779215f73ae749e7be3988f_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-d1c0ed64b779215f73ae749e7be3988f_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-a41d0065d79c77804d4071df72c1090b_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-a41d0065d79c77804d4071df72c1090b_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-ebbcd779e5cff6b15fb10a8c80d50081_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-ebbcd779e5cff6b15fb10a8c80d50081_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-6fe942a6bbe6e5fb12d68c8c552860f9_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-6fe942a6bbe6e5fb12d68c8c552860f9_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-dca79d40ae5efc9f578a0203579758c4_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-dca79d40ae5efc9f578a0203579758c4_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-d66c532c3b040fb05ab8e15667425620_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-d66c532c3b040fb05ab8e15667425620_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-6229fffd9f92028b1bcf0b07446ab768_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-6229fffd9f92028b1bcf0b07446ab768_1440w.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-6d9d01c88f236ee1404af72021b367aa_b.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-6d9d01c88f236ee1404af72021b367aa_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-bc409efa4b87c92e59894ae58ce91bd8_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-bc409efa4b87c92e59894ae58ce91bd8_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-beb923709de5b52f0686806a5941dd7d_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-beb923709de5b52f0686806a5941dd7d_1440w.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/v2-7c5dee04e92a6cd9d48a74e69c2302f3_b.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-7c5dee04e92a6cd9d48a74e69c2302f3_1440w.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-4117be7a870167eaa22b530d45da8324_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-4117be7a870167eaa22b530d45da8324_1440w.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-30e62eda1a5708b882269c27fe416175_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-30e62eda1a5708b882269c27fe416175_1440w.jpg">
+<meta property="article:published_time" content="2022-09-09T12:14:56.000Z">
+<meta property="article:modified_time" content="2022-09-09T12:21:18.690Z">
+<meta property="article:author" content="海之领域">
+<meta property="article:tag" content="笔记管理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/v2-9ed67ad17ea76244da44937419c4be22_b.jpg">
+
+
+<link rel="canonical" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/","path":"2022/09/09/学习类/工具类/知识管理/【笔记-工具】打造一套知识笔记管理系统/","title":"【笔记-工具】打造一套知识笔记管理系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【笔记-工具】打造一套知识笔记管理系统 | 知识管理</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?6037b165182d63a21af484a3f6eaaacf"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知识管理" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知识管理</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日常、工作、生活知识记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">什么是知识管理系统？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%A0%E5%BF%85%E9%A1%BB%E8%A6%81%E5%BB%BA%E7%AB%8B%E5%A4%96%E8%84%91%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">为什么你必须要建立外脑？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E5%A4%96%E8%84%91%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">如何建立外脑？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E8%A7%84%E5%88%99%E5%8C%96%E4%BF%A1%E6%81%AF%E2%80%94%E2%80%94%E7%BB%99%E5%A4%96%E8%84%91%E7%AB%8B%E7%BB%93%E6%9E%84%E3%80%81%E7%BB%99%E7%AC%94%E8%AE%B0%E7%AB%8B%E8%A7%84%E7%9F%A9%E3%80%82"><span class="nav-number">4.</span> <span class="nav-text">三：规则化信息——给外脑立结构、给笔记立规矩。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E9%83%A8%E7%BD%B2%E7%B4%A2%E5%BC%95%E4%BD%93%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.</span> <span class="nav-text">四：部署索引体系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E9%80%A0%E5%AE%8C%E6%AF%95%E5%90%8E%E6%9C%80%E9%87%8D%E8%A6%81%E7%9A%84%E4%BA%8B%E6%83%85%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">打造完毕后最重要的事情是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E7%AB%A0%E5%88%B0%E8%BF%99%E9%87%8C%E5%B0%B1%E7%BB%93%E6%9D%9F%E4%BA%86%EF%BC%8C%E4%B8%8B%E9%9D%A2%E6%88%91%E4%BB%AC%E6%8A%8A%E4%B8%8A%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9%E6%80%BB%E7%BB%93%E4%B8%80%E4%B8%8B%EF%BC%81%EF%BC%81%EF%BC%81"><span class="nav-number">7.</span> <span class="nav-text">文章到这里就结束了，下面我们把上面的内容总结一下！！！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B2%BE%E8%BF%9B%E4%B9%A6%E5%8D%95%E6%8E%A8%E8%8D%90%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">精进书单推荐：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">9.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="海之领域"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">海之领域</p>
+  <div class="site-description" itemprop="description">日常、工作、生活知识记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haizhilingyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haizhilingyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:haizhilingyu@gmail.com" title="E-Mail → mailto:haizhilingyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haizhilingyu.github.io/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="海之领域">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知识管理">
+      <meta itemprop="description" content="日常、工作、生活知识记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【笔记-工具】打造一套知识笔记管理系统 | 知识管理">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【笔记-工具】打造一套知识笔记管理系统<a href="https://github.com/Haizhilingyu/Haizhilingyu.github.io/tree/main/source/_posts/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/%E3%80%90%E7%AC%94%E8%AE%B0-%E5%B7%A5%E5%85%B7%E3%80%91%E6%89%93%E9%80%A0%E4%B8%80%E5%A5%97%E7%9F%A5%E8%AF%86%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-09 20:14:56 / 修改时间：20:21:18" itemprop="dateCreated datePublished" datetime="2022-09-09T20:14:56+08:00">2022-09-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">学习类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">工具类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%9F%A5%E8%AF%86%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">知识管理</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>18 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="什么是知识管理系统？"><a href="#什么是知识管理系统？" class="headerlink" title="什么是知识管理系统？"></a><strong>什么是知识管理系统？</strong></h2><p>我们先不回答这个问题，直接上个场景~</p>
 <p>假如你床头有10本书，你要在其中找到一本书，你会怎么找？</p>
 <p>你可能会说，扫一眼就找到了啊。</p>
 <p>但是，假如你现在身处世界上最大的图书馆：美国国会图书馆，藏书超2.1亿本，现在你想在里边找到某一本书，请问你如何找？</p>
@@ -395,74 +697,110 @@
 <h2 id="精进书单推荐："><a href="#精进书单推荐：" class="headerlink" title="精进书单推荐："></a>精进书单推荐：</h2><p>如果对该话题感兴趣，老常为你精选和整理了主题书单，阅读建议按照从初级到高级已分类好，想要这个书单请自行移步老常公号【常青说】<strong>回复：知识体系</strong>，拿去不谢~</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a><strong>最后</strong></h2><p>如果文章对你有启发，请在下面的赞赏按钮给我寄来支票，你认为对你值多少钱，就给我寄多少钱~</p>
 <p><strong>不便赞赏的同学，一波三连，点赞，关注、捧个人场，就是对我的巨大鼓励和支持！！！你的点赞决定我还要不要写下去，没赞，我更新的动力不足啊~~</strong></p>
-<p>2.关注我 <a href="https://www.zhihu.com/people/9a0115dfed946bf2175e59a089763b69">@常青</a> 和 <a href="https://zhuanlan.zhihu.com/rbxxl">我的专栏</a> ， 第一时间收到干货~</p>
+<p>2.关注我 <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/9a0115dfed946bf2175e59a089763b69">@常青</a> 和 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/rbxxl">我的专栏</a> ， 第一时间收到干货~</p>
 <p>3.在留言下评论和我一起探讨这个话题，我相信，我们可以碰撞出更多火花~</p>
-<p>谢谢你的支持！<br>转载自<a href="https://zhuanlan.zhihu.com/p/191519306">https://zhuanlan.zhihu.com/p/191519306</a></p>
-]]></content>
-      <categories>
-        <category>学习类</category>
-        <category>工具类</category>
-        <category>知识管理</category>
-      </categories>
-      <tags>
-        <tag>笔记管理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>使用枚举来巧妙干掉if-else，使代码更加优雅</title>
-    <url>/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%90%8E%E7%AB%AF%E6%8A%80%E6%9C%AF/Java/%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/%E4%BD%BF%E7%94%A8%E6%9E%9A%E4%B8%BE%E6%9D%A5%E5%B7%A7%E5%A6%99%E5%B9%B2%E6%8E%89if-else%EF%BC%8C%E4%BD%BF%E4%BB%A3%E7%A0%81%E6%9B%B4%E5%8A%A0%E4%BC%98%E9%9B%85/</url>
-    <content><![CDATA[<p><strong>导读：</strong>本文通过一个简单的例子来展示如何通过枚举巧妙地干掉if-else，使代码看起来更佳优雅。</p>
-<p><strong>场景：</strong> 当我们接收到一些数据需要对其进行处理时，由于它们来自于不同的渠道（如：腾讯，头条），不同渠道所需的处理方式不同，下面我们写一个简单Demo来实现该的场景。</p>
-<p><img src="https://p3-sign.toutiaoimg.com/dfic-imagehandler/a505ff21-85dc-420d-a512-6d501cf656ac~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=WnH8DbFJPM2NTftVuODu9PypsIE="></p>
-<h1 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h1><p>1、首先构建一个 GeneralChannelRule 基础规则抽象类，定义一个抽象方法process()，不同的渠道都需要实现该抽象方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public abstract class GeneralChannelRule &#123;</span><br><span class="line"> public abstract void process();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>谢谢你的支持！<br>转载自<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/191519306">https://zhuanlan.zhihu.com/p/191519306</a></p>
 
-<p>2、编写一个腾讯的规则类，定义具体对于腾讯渠道数据的处理逻辑</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class TencentChannelRule extends GeneralChannelRule</span><br><span class="line"> 		@Override</span><br><span class="line">    public void process() &#123;</span><br><span class="line">        // Tencent处理逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
 
-<p>3、编写一个头条的规则类，定义具体对于头条数据的处理逻辑</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public class TouTiaoChannelRule extends GeneralChannelRule</span><br><span class="line"> 		@Override</span><br><span class="line">    public void process() &#123;</span><br><span class="line">        // TouTiao处理逻辑</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    
+    
+    
 
-<p>4、建立一个简单的枚举类</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public enum ChannelRuleEnum &#123;</span><br><span class="line">    /**</span><br><span class="line">     * 头条</span><br><span class="line">     */</span><br><span class="line">    TOUTIAO(&quot;TOUTIAO&quot;),</span><br><span class="line">    /**</span><br><span class="line">     * 腾讯</span><br><span class="line">     */</span><br><span class="line">    TENCENT(&quot;TENCENT&quot;),</span><br><span class="line">    ;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
 
-<p>5、使用规则对数据进行处理。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        //这里我们模拟接收到的数据，其渠道为为TOUTIAO，来自头条的数据</span><br><span class="line">        String sign = &quot;TOUTIAO&quot;;</span><br><span class="line">        GeneralChannelRule rule;</span><br><span class="line">        //根据对应渠道获取对应的具体规则实现类</span><br><span class="line">        if (ChannelRuleEnum.TENCENT.code.equals(sign)) &#123;</span><br><span class="line">            rule = new TencentChannelRule();</span><br><span class="line">        &#125; else if (ChannelRuleEnum.TOUTIAO.code.equals(sign)) &#123;</span><br><span class="line">            rule = new TouTiaoChannelRule();</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            //匹配不到</span><br><span class="line">        &#125;</span><br><span class="line">  			//执行</span><br><span class="line">        rule.process();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+  <div class="social-list">
 
-<p><strong>解析</strong>：如果通过上面的方式，则存在则两个缺点。</p>
-<ul>
-<li>当我们需要新增新的渠道的时候，需要对main方法中的逻辑进行修改调整。这违背了设计模式中的开放封闭规则。</li>
-</ul>
-<blockquote>
-<p>开放封闭原bai则的核心的思想是软件实体是可扩du展，而不可zhi修改的。也就是说，对扩展是开dao放的，而对修改是封闭的</p>
-</blockquote>
-<ul>
-<li>新增渠道后，修改代码会产生大量的if else，不太优雅。</li>
-</ul>
-<p>为了解决以上的两个问题，我们可以<strong>借助枚举类来巧妙优化</strong>。</p>
-<p><img src="https://p3-sign.toutiaoimg.com/dfic-imagehandler/afed0620-5bb9-4320-a663-cb87f868303f~noop.image?_iz=58558&from=article.pc_detail&x-expires=1663332603&x-signature=HoICSU9qcH+Ex2bny3B2HWvbMEg="></p>
-<h1 id="新的思路"><a href="#新的思路" class="headerlink" title="新的思路"></a>新的思路</h1><p>1、下面我们调整一下枚举类，增加一个GeneralChannelRule属性，并且给对应渠道构建对应的GeneralChannelRule实现类，新增一个match() 匹配方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public enum ChannelRuleEnum &#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 头条</span><br><span class="line">     */</span><br><span class="line">    TOUTIAO(&quot;TOUTIAO&quot;,new TouTiaoChannelRule()),</span><br><span class="line">    /**</span><br><span class="line">     * 腾讯</span><br><span class="line">     */</span><br><span class="line">    TENCENT(&quot;TENCENT&quot;,new TencentChannelRule()),</span><br><span class="line">    ;</span><br><span class="line"></span><br><span class="line">    public String name;</span><br><span class="line"></span><br><span class="line">    public GeneralChannelRule channel;</span><br><span class="line"></span><br><span class="line">    ChannelRuleEnum(String name, GeneralChannelRule channel) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">  //匹配</span><br><span class="line">    public static ChannelRuleEnum match(String name)&#123;</span><br><span class="line">        ChannelRuleEnum[] values = ChannelRuleEnum.values();</span><br><span class="line">        for (ChannelRuleEnum value : values) &#123;</span><br><span class="line">            if(value.name.equals(name))&#123;</span><br><span class="line">                return value;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br><span class="line">    public String getName() &#123;</span><br><span class="line">        return name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public GeneralChannelRule getChannel() &#123;</span><br><span class="line">        return channel;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
 
-<p>2、改写程序</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">        String sign = &quot;TOUTIAO&quot;;</span><br><span class="line">        ChannelRuleEnum channelRule = ChannelRuleEnum.match(sign);</span><br><span class="line">        GeneralChannelRule rule = channelRule.channel;</span><br><span class="line">        rule.process(sign);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
 
-<p><strong>解析：</strong>通过使用枚举类，在枚举中将 key 与 规则具体实现进行绑定。通过改变：</p>
-<ul>
-<li>可以减少if -else使得代码更加优雅</li>
-<li>如果需要新增渠道，我们只需要在编写具体规则实现类并继承GeneralChannelRule抽象类，并在枚举类中新增的枚举，而不需要改动到原先的任何代码。这符合了开发封闭原则。</li>
-</ul>
-<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>以上是通过枚举来巧妙干掉if-else的方案，对于减少 if-else 还有很多有趣的解决方案（如：状态设计模式等），感兴趣的朋友去查阅相关的资料。</p>
-]]></content>
-      <categories>
-        <category>学习类</category>
-        <category>后端技术</category>
-        <category>Java</category>
-        <category>代码优化</category>
-      </categories>
-      <tags>
-        <tag>代码优化</tag>
-        <tag>减少ifelse</tag>
-      </tags>
-  </entry>
-</search>
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0%E7%AE%A1%E7%90%86/" rel="tag"># 笔记管理</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/09/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/Parsing%20JavaScript%20with%20JavaScript/" rel="next" title="【笔记-前端-ast】Parsing JavaScript with JavaScript">
+                  【笔记-前端-ast】Parsing JavaScript with JavaScript <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">海之领域</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">19k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">35 分钟</span>
+  </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
