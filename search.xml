@@ -64,7 +64,78 @@
   <entry>
     <title>数据库环境</title>
     <url>/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E5%9C%A8%E7%BA%BF%E5%B7%A5%E5%85%B7/%E5%9C%A8%E7%BA%BFSQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%8E%AF%E5%A2%83/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>大家好，我是只谈技术不剪发的 Tony 老师。今天给大家分享几个在线的免费 SQL 运行环境，也就是在线数据库。这些网站可以帮助我们快速运行一些 SQL 语句的测试或者验证，同时还可以在网络上进行分享，关键不需要自己安装数据库。</p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>在线 SQL 数据库</th>
+<th>支持数据库</th>
+<th>是否需要注册</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="http://sqlfiddle.com/">SQL Fiddle</a></td>
+<td>MySQL 5.6、Oracle 11g R2、PostgreSQL 9.6、SQLite 3.32.1 以及 SQL Server 2017</td>
+<td>不需要</td>
+<td>数据库不是最新版本</td>
+</tr>
+<tr>
+<td><a href="https://www.db-fiddle.com/">DB Fiddle</a></td>
+<td>MySQL 5.5 - MySQL 8.0、PostgreSQL 9.4 - PostgreSQL 13 以及 SQLite 3.30</td>
+<td>不需要</td>
+<td>支持团队协作</td>
+</tr>
+<tr>
+<td><a href="https://dbfiddle.uk/">db&lt;&gt;fiddle</a></td>
+<td>MySQL 5.5 - MySQL 8.0、MariaDB 10.3 - MariaDB 10.5、  Oracle 11g R2、Oracle 18c、PostgreSQL 9.5 - PostgreSQL 13、  DB2 11.1、Firebird 3.0、SQLite 3.27 以及 SQL Server 2014 - SQL Server 2019</td>
+<td>不需要</td>
+<td>支持产品最全，支持比较功能</td>
+</tr>
+<tr>
+<td><a href="https://sqliteonline.com/">SQL Online</a></td>
+<td>SQLite 3.30、MariaDB 10.4、PostgreSQL 12.4 以及 SQL Server 2019</td>
+<td>不需要</td>
+<td>共享功能需要注册</td>
+</tr>
+<tr>
+<td><a href="https://livesql.oracle.com/">Oracle Live SQL</a></td>
+<td>Oracle 19c</td>
+<td>免费注册</td>
+<td>学习 Oracle 首选</td>
+</tr>
+</tbody></table>
+<h2 id="SQL-Fiddle"><a href="#SQL-Fiddle" class="headerlink" title="SQL Fiddle"></a>SQL Fiddle</h2><p><a href="http://sqlfiddle.com/">SQL Fiddle</a> 提供了 MySQL、Oracle、<a href="https://so.csdn.net/so/search?q=PostgreSQL&spm=1001.2101.3001.7020">PostgreSQL</a>、SQLite 以及 SQL Server 数据库环境，使用时无需注册。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200915222107872.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvcnNlcw==,size_16,color_FFFFFF,t_70#pic_center" alt="SQL Fiddle"><br>其中，左侧文本框用于输入初始化语句创建表结构和数据，点击“Build Schema📥”运行；也可以通过“Text to DDL”将格式化文本转换为 DDL 语句。右侧文本框用于输入 SQL 语句，点击“Run SQL▶️”执行，执行结果显示在页面下方；“Run SQL▶️”可以选择输出结果的格式，包括表格、普通文本 以及 Markdown 三种格式。</p>
+<p>另外，复制网页地址可以分享本次测试的数据和结果，以上截图的地址为：<a href="http://sqlfiddle.com/#!9/a6c585/1">http://sqlfiddle.com/#!9&#x2F;a6c585&#x2F;1</a>。</p>
+<h2 id="DB-Fiddle"><a href="#DB-Fiddle" class="headerlink" title="DB Fiddle"></a>DB Fiddle</h2><p><a href="https://www.db-fiddle.com/">DB Fiddle</a> 提供了 MySQL、PostgreSQL 以及 <a href="https://so.csdn.net/so/search?q=SQLite&spm=1001.2101.3001.7020">SQLite</a> 数据库的<strong>最新版本</strong>，使用时无需注册，同时也提供了付费版本。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200915224823664.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvcnNlcw==,size_16,color_FFFFFF,t_70#pic_center" alt="DB Fiddle"><br>其中，最左侧文本框可以输入本次测试的标题和描述。中间文本框用于输入初始化语句，点击“▶️Run”运行；也可以通过“Text to DDL”将格式化文本转换为 DDL 语句。最右侧文本框用于输入 SQL 查询，点击“▶️Run”执行，执行结果显示在页面下方。点击“Copy as Markdown”可以将输出结果以 Markdown 格式进行复制。</p>
+<p>点击“💾Save”或者“💾Update”可以保存并生成唯一 URL，以上截图的地址为：<br><a href="https://www.db-fiddle.com/f/83V6zUSzX42ZpzrbX1txd7/1">https://www.db-fiddle.com/f/83V6zUSzX42ZpzrbX1txd7/1</a>。</p>
+<p>DB Fiddle 另一个亮点是可以多人在线协作，点击“👥Collaborate”生成一个邀请链接，其他人点击即可加入协作，同时支持语音和文字聊天。</p>
+<h2 id="db-lt-gt-fiddle"><a href="#db-lt-gt-fiddle" class="headerlink" title="db&lt;&gt;fiddle"></a>db&lt;&gt;fiddle</h2><p><a href="https://dbfiddle.uk/">db&lt;&gt;fiddle</a> 提供了 MySQL、MariaDB、Oracle、PostgreSQL、DB2、Firebird、SQLite 以及 SQL Server 数据库的<strong>各种版本</strong>，使用时无需注册。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200916091331914.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvcnNlcw==,size_16,color_FFFFFF,t_70#pic_center" alt="db&lt;&gt;fiddle"><br>这个网站应该是目前支持数据库种类最多的在线环境，而且每种数据库还提供了不同的版本。如果你点击“compare”，可以同时在两个不同的数据库中运行测试，比较它们的结果。</p>
+<p>一旦点击“run”按钮之后，就可以生成一个唯一 URL。以上截图的地址为：<br><a href="https://dbfiddle.uk/?rdbms=sqlserver_2019l&fiddle=9bcd60e2bcd7966fc3be475addab8eb2">https://dbfiddle.uk/?rdbms=sqlserver_2019l&amp;fiddle&#x3D;9bcd60e2bcd7966fc3be475addab8eb2</a>。</p>
+<h2 id="SQL-Online"><a href="#SQL-Online" class="headerlink" title="SQL Online"></a>SQL Online</h2><p><a href="https://sqliteonline.com/">SQL Online</a> 提供了 MariaDB、PostgreSQL、SQLite 以及 SQL Server 数据库环境，Oracle 数据库正在计划中。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200916094358342.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvcnNlcw==,size_16,color_FFFFFF,t_70#pic_center" alt="SQL Online"><br>其中，“File”按钮提供了本地保存和打开功能；“🌏Owner DB”可以连接到指定的远程数据库；“▶️Run”用于执行 SQL 语句；“📥Export”用于导出查询结果和 DDL 语句，支持 CSV、XML 以及 JSON 格式；“📤Import”用于从本地文件导入 DDL 和数据。页面右上角的“⚙️”可以用于设置界面风格。</p>
+<p>另外，“Share”用于生成共享链接，需要注册一个免费账号才能使用。以上截图的地址为：<br><a href="https://sqliteonline.com/#fiddle=b10c1ad462ac37386ac200341b7bd05758a7059321bd675ecb6c2ed7aa563f38">https://sqliteonline.com/#fiddle=b10c1ad462ac37386ac200341b7bd05758a7059321bd675ecb6c2ed7aa563f38</a>。</p>
+<p>团队协作功能“Team”需要付费才能使用。</p>
+<h2 id="Oracle-Live-SQL"><a href="#Oracle-Live-SQL" class="headerlink" title="Oracle Live SQL"></a>Oracle Live SQL</h2><p><a href="https://livesql.oracle.com/">Oracle Live SQL</a> 是 Oracle 官方提供的在线 SQL 学习和分享环境，需要注册一个免费账号。</p>
+<p><img src="https://img-blog.csdnimg.cn/20200916101558514.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvcnNlcw==,size_16,color_FFFFFF,t_70#pic_center" alt="Oracle Live SQL"><br>其中，SQL Worksheet 是输入和运行 SQL 语句的工作区，支持脚本的在线保存（私有脚本和共享脚本）和离线保存功能以及结果导出功能；My Session 提供了历史会话管理功能；Schema 提供了模式对象的查看功能，包括系统提供的模式，例如 HR、OE 等；Quick SQL 可以通过格式化文本快速创建 SQL 语句；My Scripts 保存了历史脚本；My Tutorials 是自定义的教程；Code Library 是其他人共享的教程和脚本库，可以点击运行或者下载使用。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>在线数据库环境可以方便运行一些 SQL 测试和验证，同时可以在网络上分享和讨论。除了以上介绍的在线环境之外，还有一些 SQL 在线教程网站也提供了配套的运行环境，例如 <a href="http://sample.jimstone.com.cn/xsql/">SQL 学习网</a>、<a href="http://xuesql.cn/">XUESQL</a>、<a href="https://sqlzoo.net/wiki/SQL_Tutorial/zh">SQLZoo</a>、<a href="https://leetcode-cn.com/">力扣</a>、<a href="https://www.w3schools.com/sql/trysql.asp?filename=trysql_op_in">w3schools</a>。</p>
+<p>你还使用过哪些类似的网站值得推荐？</p>
+<p>转载自： <a href="https://blog.csdn.net/horses/article/details/108603935">https://blog.csdn.net/horses/article/details/108603935</a></p>
+]]></content>
+      <categories>
+        <category>学习类</category>
+        <category>工具类</category>
+        <category>在线工具</category>
+      </categories>
+      <tags>
+        <tag>SQL</tag>
+        <tag>在线数据库</tag>
+      </tags>
   </entry>
   <entry>
     <title>打造一套知识笔记管理系统</title>
