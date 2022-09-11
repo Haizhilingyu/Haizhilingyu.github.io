@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haizhilingyu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"content":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="横空出世！IDEA画图神器来了，比Visio快10倍！ 程序员在工作中，经常会有绘制时序图、流程图的需求，尤其是在写文档的时候。平时我们会选择ProcessOn这类工具来绘制，但有时候用代码来画图可能会更高效一点，毕竟没有比程序员更熟悉代码的了。今天给大家推荐一款画图工具PlantUML，可以配合IDEA使用，画图更高效！  PlantUML简介 PlantUML是一款开源的UML图绘制工具，支持">
+<meta property="og:type" content="article">
+<meta property="og:title" content="横空出世！IDEA画图神器来了">
+<meta property="og:url" content="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86/index.html">
+<meta property="og:site_name" content="知识管理">
+<meta property="og:description" content="横空出世！IDEA画图神器来了，比Visio快10倍！ 程序员在工作中，经常会有绘制时序图、流程图的需求，尤其是在写文档的时候。平时我们会选择ProcessOn这类工具来绘制，但有时候用代码来画图可能会更高效一点，毕竟没有比程序员更熟悉代码的了。今天给大家推荐一款画图工具PlantUML，可以配合IDEA使用，画图更高效！  PlantUML简介 PlantUML是一款开源的UML图绘制工具，支持">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415424745/69659.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415490688/29577.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415594943/86812.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415582745/16528.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415569144/70599.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415522170/73318.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415531525/60580.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415559206/16212.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415556738/60102.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415577490/91223.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415565041/14598.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022090909415514366/28229.jpg">
+<meta property="article:published_time" content="2022-09-10T10:58:02.000Z">
+<meta property="article:modified_time" content="2022-09-11T04:47:57.536Z">
+<meta property="article:author" content="海之领域">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.cubox.pro/article/2022090909415424745/69659.jpg">
+
+
+<link rel="canonical" href="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86/","path":"2022/09/10/学习类/工具类/画图/横空出世！IDEA画图神器来了/","title":"横空出世！IDEA画图神器来了"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>横空出世！IDEA画图神器来了 | 知识管理</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?6037b165182d63a21af484a3f6eaaacf"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知识管理" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知识管理</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日常、工作、生活知识记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86%EF%BC%8C%E6%AF%94Visio%E5%BF%AB10%E5%80%8D%EF%BC%81"><span class="nav-number">1.</span> <span class="nav-text">横空出世！IDEA画图神器来了，比Visio快10倍！</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PlantUML%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">PlantUML简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="nav-number">1.3.1.</span> <span class="nav-text">时序图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E4%BE%8B%E5%9B%BE"><span class="nav-number">1.3.2.</span> <span class="nav-text">用例图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9B%BE"><span class="nav-number">1.3.3.</span> <span class="nav-text">类图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B4%BB%E5%8A%A8%E5%9B%BE"><span class="nav-number">1.3.4.</span> <span class="nav-text">活动图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE"><span class="nav-number">1.3.5.</span> <span class="nav-text">思维导图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.5.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="海之领域"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">海之领域</p>
+  <div class="site-description" itemprop="description">日常、工作、生活知识记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haizhilingyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haizhilingyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:haizhilingyu@gmail.com" title="E-Mail → mailto:haizhilingyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="海之领域">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知识管理">
+      <meta itemprop="description" content="日常、工作、生活知识记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="横空出世！IDEA画图神器来了 | 知识管理">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          横空出世！IDEA画图神器来了<a href="https://github.com/Haizhilingyu/Haizhilingyu.github.io/tree/main/source/_posts/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/%E6%A8%AA%E7%A9%BA%E5%87%BA%E4%B8%96%EF%BC%81IDEA%E7%94%BB%E5%9B%BE%E7%A5%9E%E5%99%A8%E6%9D%A5%E4%BA%86.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-10 18:58:02" itemprop="dateCreated datePublished" datetime="2022-09-10T18:58:02+08:00">2022-09-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-11 12:47:57" itemprop="dateModified" datetime="2022-09-11T12:47:57+08:00">2022-09-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">学习类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">工具类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E7%94%BB%E5%9B%BE/" itemprop="url" rel="index"><span itemprop="name">画图</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="横空出世！IDEA画图神器来了，比Visio快10倍！"><a href="#横空出世！IDEA画图神器来了，比Visio快10倍！" class="headerlink" title="横空出世！IDEA画图神器来了，比Visio快10倍！"></a>横空出世！IDEA画图神器来了，比Visio快10倍！</h1><p>程序员在工作中，经常会有绘制时序图、流程图的需求，尤其是在写文档的时候。平时我们会选择ProcessOn这类工具来绘制，但有时候用代码来画图可能会更高效一点，毕竟没有比程序员更熟悉代码的了。今天给大家推荐一款画图工具PlantUML，可以配合IDEA使用，画图更高效！</p>
+<h2 id="PlantUML简介"><a href="#PlantUML简介" class="headerlink" title="PlantUML简介"></a>PlantUML简介</h2><p>PlantUML是一款开源的UML图绘制工具，支持通过文本来生成图形，使用起来非常高效。可以支持时序图、类图、对象图、活动图、思维导图等图形的绘制。</p>
+<p>下面使用PlantUML来绘制一张流程图，可以实时预览，速度也很快！</p>
+<p><img src="https://image.cubox.pro/article/2022090909415424745/69659.jpg"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
+<p>通过在IDEA中安装插件来使用PlantUML无疑是最方便的，接下来我们来安装下IDEA的PlantUML插件。</p>
+</blockquote>
+<ul>
+<li>首先在IDEA的插件市场中搜索<code>PlantUML</code>，安装这个排名第一的插件；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415490688/29577.jpg"></p>
+<ul>
+<li>有时候网络不好的话可能下载不下来，可以点击<code>Plguin homepage</code>按钮访问插件主页，然后选择合适的版本下载压缩包；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415594943/86812.jpg"></p>
+<ul>
+<li>下载成功后，选择从本地安装即可。</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415582745/16528.jpg"></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><blockquote>
+<p>接下来我们使用PlantUML插件分别绘制时序图、用例图、类图、活动图、思维导图，来体验下PlantUML是不是真的好用！</p>
+</blockquote>
+<h3 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h3><blockquote>
+<p>时序图（Sequence Diagram），是一种UML交互图。它通过描述对象之间发送消息的时间顺序显示多个对象之间的动态协作。我们在学习Oauth2的时候，第一步就是要搞懂Oauth2的流程，这时候有个时序图帮助可就大了。下面我们使用PlantUML来绘制Oauth2中使用授权码模式颁发令牌的时序图。</p>
+</blockquote>
+<ul>
+<li>首先我们需要新建一个PlantUML文件，选择时序图；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415569144/70599.jpg"></p>
+<ul>
+<li>我们可以通过PlantUML提供的语法来生成Oauth2的时序图，语法还是非常简单的，具体内容如下；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">title Oauth2令牌颁发之授权码模式</span><br><span class="line"></span><br><span class="line">actor User as user</span><br><span class="line">participant &quot;User Agent&quot; as userAgent</span><br><span class="line">participant &quot;Client&quot; as client</span><br><span class="line">participant &quot;Auth Login&quot; as login</span><br><span class="line">participant &quot;Auth Server&quot; as server</span><br><span class="line"></span><br><span class="line">autonumber</span><br><span class="line">user-&gt;userAgent:访问客户端</span><br><span class="line">activate userAgent</span><br><span class="line">userAgent-&gt;login:重定向到授权页面+clientId+redirectUrl</span><br><span class="line">activate login</span><br><span class="line">login-&gt;server:用户名+密码+clientId+redirectUrl</span><br><span class="line">activate server</span><br><span class="line">server--&gt;login:返回授权码</span><br><span class="line">login--&gt;userAgent:重定向到redirectUrl+授权码code</span><br><span class="line">deactivate login</span><br><span class="line">userAgent-&gt;client:使用授权码code换取令牌</span><br><span class="line">activate client</span><br><span class="line">client-&gt;server:授权码code+clientId+clientSecret</span><br><span class="line">server--&gt;client:颁发访问令牌accessToken+refreshToken</span><br><span class="line">deactivate server</span><br><span class="line">client--&gt;userAgent:返回访问和刷新令牌</span><br><span class="line">deactivate client</span><br><span class="line">userAgent--&gt; user:令牌颁发完成</span><br><span class="line">deactivate userAgent</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>该代码将生成如下时序图，用写代码的方式来画时序图，是不是够炫酷；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415522170/73318.jpg"></p>
+<ul>
+<li><p>本时序图关键说明如下：</p>
+</li>
+<li><p><code>title</code>可以用于指定UML图的标题；</p>
+</li>
+<li><p>通过<code>actor</code>可以声明人形的参与者；</p>
+</li>
+<li><p>通过<code>participant</code>可以声明普通类型的参与者；</p>
+</li>
+<li><p>通过<code>as</code>可以给参与者取别名；</p>
+</li>
+<li><p>通过<code>-&gt;</code>可以绘制参与者之间的关系，虚线箭头可以使用<code>--&gt;</code>；</p>
+</li>
+<li><p>在每个参与者关系后面，可以使用<code>:</code>给关系添加说明；</p>
+</li>
+<li><p>通过<code>autonumber</code>我们可以给参与者关系自动添加序号；</p>
+</li>
+<li><p>通过<code>activate</code>和<code>deactivate</code>可以指定参与者的生命线。</p>
+</li>
+<li><p>这里还有个比较神奇的功能，当我们右键时序图时，可以生成一个在线访问的链接；</p>
+</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415531525/60580.jpg"></p>
+<ul>
+<li>直接访问这个链接，可以在线访问UML时序图，并进行编辑，是不是很酷！</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415559206/16212.jpg"></p>
+<h3 id="用例图"><a href="#用例图" class="headerlink" title="用例图"></a>用例图</h3><blockquote>
+<p>用例图（Usecase Diagram）是用户与系统交互的最简表示形式，展现了用户和与他相关的用例之间的关系。通过用例图，我们可以很方便地表示出系统中各个角色与用例之间的关系，下面我们用PlantUML来画个用例图。</p>
+</blockquote>
+<ul>
+<li><p>首先我们需要新建一个PlantUML文件，选择用例图，该用例图用于表示顾客、主厨、美食家与餐馆中各个用例之间的关系，具体内容如下；</p>
+<p>@startumlleft to right directionactor Guest as gpackage Professional {    actor Chief as c    actor “Food Critic” as fc}package Restaurant {    usecase “Eat Food” as uc1    usecase “Pay For Food” as uc2    usecase “Drink” as uc3    usecase “Review” as uc4}g–&gt; uc1g–&gt; uc2g–&gt; uc3fc–&gt; uc4@enduml</p>
+</li>
+<li><p>该代码将生成如下用例图；</p>
+</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415556738/60102.jpg"></p>
+<ul>
+<li><p>本用例图关键说明如下：</p>
+</li>
+<li><p><code>left to right direction</code>表示按从左到右的顺序绘制用例图，默认是从上到下；</p>
+</li>
+<li><p>通过<code>package</code>可以对角色和用例进行分组；</p>
+</li>
+<li><p>通过<code>actor</code>可以定义用户；</p>
+</li>
+<li><p>通过<code>usecase</code>可以定义用例；</p>
+</li>
+<li><p>角色和用例之间的关系可以使用<code>--&gt;</code>来表示。</p>
+</li>
+</ul>
+<h3 id="类图"><a href="#类图" class="headerlink" title="类图"></a>类图</h3><blockquote>
+<p>类图（Class Diagram）可以表示类的静态结构，比如类中包含的属性和方法，还有类的继承结构。下面我们用PlantUML来画个类图。</p>
+</blockquote>
+<ul>
+<li>首先我们需要新建一个PlantUML文件，选择类图，该图用于表示Person、Student、Teacher类的结构，具体内容如下；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">left to right direction</span><br><span class="line">actor Guest as g</span><br><span class="line">package Professional &#123;</span><br><span class="line">    actor Chief as c</span><br><span class="line">    actor &quot;Food Critic&quot; as fc</span><br><span class="line">&#125;</span><br><span class="line">package Restaurant &#123;</span><br><span class="line">    usecase &quot;Eat Food&quot; as uc1</span><br><span class="line">    usecase &quot;Pay For Food&quot; as uc2</span><br><span class="line">    usecase &quot;Drink&quot; as uc3</span><br><span class="line">    usecase &quot;Review&quot; as uc4</span><br><span class="line">&#125;</span><br><span class="line">g--&gt; uc1</span><br><span class="line">g--&gt; uc2</span><br><span class="line">g--&gt; uc3</span><br><span class="line">fc--&gt; uc4</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>该代码将生成如下类图，看下代码和类图，是不是发现和我们用代码定义类还挺像的；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415577490/91223.jpg"></p>
+<ul>
+<li><p>本类图关键说明如下：</p>
+</li>
+<li><p>通过<code>class</code>可以定义类；</p>
+</li>
+<li><p>通过在属性和方法左边加符号可以定义可见性，<code>-</code>表示<code>private</code>，<code>#</code>表示<code>protected</code>，<code>+</code>表示<code>public</code>；</p>
+</li>
+<li><p>通过<code>&lt;|--</code>表示类之间的继承关系。</p>
+</li>
+</ul>
+<h3 id="活动图"><a href="#活动图" class="headerlink" title="活动图"></a>活动图</h3><blockquote>
+<p>活动图（Activity Diagram）是我们用的比较多的UML图，经常用于表示业务流程，比如电商中的下单流程就可以用它来表示。下面我们用PlantUML来画个活动图。</p>
+</blockquote>
+<ul>
+<li>首先我们需要新建一个PlantUML文件，选择活动图，这里使用了mall项目中购物车中生成确认单的流程，具体内容如下；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">class Person &#123;</span><br><span class="line">    # String name</span><br><span class="line">    # Integer age</span><br><span class="line">    + void move()</span><br><span class="line">    + void say()</span><br><span class="line">&#125;</span><br><span class="line">class Student &#123;</span><br><span class="line">    - String studentNo</span><br><span class="line">    + void study()</span><br><span class="line">&#125;</span><br><span class="line">class Teacher &#123;</span><br><span class="line">    - String teacherNo</span><br><span class="line">    + void teach()</span><br><span class="line">&#125;</span><br><span class="line">Person &lt;|-- Student</span><br><span class="line">Person &lt;|-- Teacher</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>该代码将生成如下活动图，在活动图中我们既可以用<code>if else</code>，又可以使用<code>switch</code>，甚至还可以使用<code>while循环</code>，功能还是挺强大的；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415565041/14598.jpg"></p>
+<ul>
+<li><p>本活动图关键说明如下：</p>
+</li>
+<li><p>通过<code>start</code>和<code>stop</code>可以表示流程的开始和结束；</p>
+</li>
+<li><p>通过<code>:</code>和<code>;</code>中间添加文字来定义活动流程节点；</p>
+</li>
+<li><p>通过<code>if</code>+<code>then</code>+<code>endif</code>定义条件判断；</p>
+</li>
+<li><p>通过<code>switch</code>+<code>case</code>+<code>endswitch</code>定义switch判断。</p>
+</li>
+</ul>
+<h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><blockquote>
+<p>思维导图（Mind Map），是表达发散性思维的有效图形工具，它简单却又很有效，是一种实用性的思维工具。之前在我的mall学习教程中就有很多地方用到了，下面我们用PlantUML来画个思维导图。</p>
+</blockquote>
+<ul>
+<li>首先我们需要新建一个PlantUML文件，选择思维导图，这里使用了mall学习路线中的大纲视图，具体内容如下；</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">title 生成确认单流程</span><br><span class="line">start</span><br><span class="line">:获取购物车信息并计算好优惠;</span><br><span class="line">:从ums_member_receive_address表中\n获取会员收货地址列表;</span><br><span class="line">:获取该会员所有优惠券信息;</span><br><span class="line">switch(根据use_type判断每个优惠券是否可用)</span><br><span class="line">case(0)</span><br><span class="line">    :全场通用;</span><br><span class="line">    if (判断所有商品总金额是否\n满足使用起点金额) then (否)</span><br><span class="line">        :得到用户不可用优惠券列表;</span><br><span class="line">        stop</span><br><span class="line">    endif</span><br><span class="line">case(-1)</span><br><span class="line">    :指定分类;</span><br><span class="line">    if (判断指定分类商品总金额\n是否满足使用起点金额) then (否)</span><br><span class="line">        :得到用户不可用优惠券列表;</span><br><span class="line">        stop</span><br><span class="line">    endif</span><br><span class="line">case(-2)</span><br><span class="line">    :判断指定商品总金额是否满足使用起点金额;</span><br><span class="line">    if (判断指定分类商品总金额\n是否满足使用起点金额) then (否)</span><br><span class="line">        :得到用户不可用优惠券列表;</span><br><span class="line">        stop</span><br><span class="line">    endif</span><br><span class="line">endswitch</span><br><span class="line">:得到用户可用优惠券列表;</span><br><span class="line">:获取用户积分;</span><br><span class="line">:获取积分使用规则;</span><br><span class="line">:计算总金额，活动优惠，应付金额;</span><br><span class="line">stop</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>该代码将生成如下思维导图，其实使用PlantUML我们可以自己定义图形的样式，这里我自定义了下颜色；</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022090909415514366/28229.jpg"></p>
+<ul>
+<li><p>本思维导图关键说明如下：</p>
+</li>
+<li><p>通过<code>+</code>和<code>-</code>可以表示思维导图中的节点，具有方向性；</p>
+</li>
+<li><p>通过<code>[#颜色]</code>可以定义节点的边框颜色；</p>
+</li>
+<li><p>通过<code>_</code>可以去除节点的边框；</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>虽然目前可以绘制UML图的图形化工具很多，但是对于程序员来说，使用代码来绘图可能更直接，效率更高，尤其是配合IDEA使用。如果你想使用代码来绘图，不妨尝试下PlantUML吧。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>官方文档：<a target="_blank" rel="noopener" href="https://plantuml.com/zh/">https://plantuml.com/zh/</a><br><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MjM5NTY1MjY0MQ==&mid=2650862341&idx=4&sn=815485b30faa70e67fc823be10d93571&chksm=bd01664b8a76ef5d00026f184234f4b579f8b7bbd7955031405788a0ba0f797d50dab0302750&mpshare=1&scene=1&srcid=0823GpOLiSIskjbVRlgr4CZ2&sharer_sharetime=1662801754250&sharer_shareid=f9049818211070a874d51073efa3d8bf#rd">查看原网页: mp.weixin.qq.com</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/localStorage%E7%9A%84%E9%AB%98%E9%98%B6%E7%94%A8%E6%B3%95/" rel="prev" title="localStorage的高阶用法">
+                  <i class="fa fa-chevron-left"></i> localStorage的高阶用法
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">海之领域</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">52k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:34</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>

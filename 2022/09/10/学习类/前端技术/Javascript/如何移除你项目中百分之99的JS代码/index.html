@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"haizhilingyu.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"content":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="如何移除你项目中 99% 的 JS 代码 在前不久的WWC22中，builder.io的CTO 「miško hevery」（同时也是Angular&#x2F;AngularJS的发明者）发表了一段充满想象力的演讲。-    miško hevery  在演讲中，他介绍了一款全栈SSR框架 —— Qwik，这款框架号称「能帮你移除项目中99%的JS代码」。    他是如何办到的，本文我们来介绍下Qwik。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何移除你项目中百分之99的JS代码">
+<meta property="og:url" content="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%99%BE%E5%88%86%E4%B9%8B99%E7%9A%84JS%E4%BB%A3%E7%A0%81/index.html">
+<meta property="og:site_name" content="知识管理">
+<meta property="og:description" content="如何移除你项目中 99% 的 JS 代码 在前不久的WWC22中，builder.io的CTO 「miško hevery」（同时也是Angular&#x2F;AngularJS的发明者）发表了一段充满想象力的演讲。-    miško hevery  在演讲中，他介绍了一款全栈SSR框架 —— Qwik，这款框架号称「能帮你移除项目中99%的JS代码」。    他是如何办到的，本文我们来介绍下Qwik。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543714822/74256.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543756157/48170.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543725346/17211.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543762376/75612.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543710885/57794.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543744922/75705.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543783855/51820.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543754047/53282.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543718108/51175.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543745118/58832.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543769448/20779.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543718212/62452.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543722776/11574.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543791121/80229.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543781442/79929.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543719277/48722.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543758529/15512.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543745523/38296.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543797899/95494.jpg">
+<meta property="og:image" content="https://image.cubox.pro/article/2022062223543762124/31648.jpg">
+<meta property="article:published_time" content="2022-09-10T09:51:50.000Z">
+<meta property="article:modified_time" content="2022-09-10T10:03:49.848Z">
+<meta property="article:author" content="海之领域">
+<meta property="article:tag" content="减少渲染">
+<meta property="article:tag" content="性能优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.cubox.pro/article/2022062223543714822/74256.jpg">
+
+
+<link rel="canonical" href="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%99%BE%E5%88%86%E4%B9%8B99%E7%9A%84JS%E4%BB%A3%E7%A0%81/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%99%BE%E5%88%86%E4%B9%8B99%E7%9A%84JS%E4%BB%A3%E7%A0%81/","path":"2022/09/10/学习类/前端技术/Javascript/如何移除你项目中百分之99的JS代码/","title":"如何移除你项目中百分之99的JS代码"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何移除你项目中百分之99的JS代码 | 知识管理</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?6037b165182d63a21af484a3f6eaaacf"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="知识管理" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">知识管理</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">日常、工作、生活知识记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD-99-%E7%9A%84-JS-%E4%BB%A3%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">如何移除你项目中 99% 的 JS 代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E5%B7%AE%EF%BC%9F%E7%A0%81%E5%86%9C%E4%B8%8D%E8%83%8C%E9%94%85"><span class="nav-number">1.1.</span> <span class="nav-text">性能差？码农不背锅</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96FCP"><span class="nav-number">1.1.1.</span> <span class="nav-text">如何优化FCP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96TTI"><span class="nav-number">1.1.2.</span> <span class="nav-text">如何优化TTI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%85%E8%B6%85%E8%B6%85%E7%BB%86%E7%B2%92%E5%BA%A6hydrate"><span class="nav-number">1.2.</span> <span class="nav-text">超超超细粒度hydrate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8E%E4%BC%98%E7%A7%80%E5%88%B0%E6%9E%81%E8%87%B4"><span class="nav-number">1.3.</span> <span class="nav-text">从优秀到极致</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AEhydrate"><span class="nav-number">1.4.</span> <span class="nav-text">对数据hydrate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E4%BA%92%E6%97%B6%E5%86%8D%E8%AF%B7%E6%B1%82JS%E4%B8%8D%E4%BC%9A%E5%8D%A1%E4%B9%88%EF%BC%9F"><span class="nav-number">1.5.</span> <span class="nav-text">交互时再请求JS不会卡么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="海之领域"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">海之领域</p>
+  <div class="site-description" itemprop="description">日常、工作、生活知识记录</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/haizhilingyu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;haizhilingyu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:haizhilingyu@gmail.com" title="E-Mail → mailto:haizhilingyu@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://haizhilingyu.github.io/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%99%BE%E5%88%86%E4%B9%8B99%E7%9A%84JS%E4%BB%A3%E7%A0%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="海之领域">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="知识管理">
+      <meta itemprop="description" content="日常、工作、生活知识记录">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何移除你项目中百分之99的JS代码 | 知识管理">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何移除你项目中百分之99的JS代码<a href="https://github.com/Haizhilingyu/Haizhilingyu.github.io/tree/main/source/_posts/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/%E5%A6%82%E4%BD%95%E7%A7%BB%E9%99%A4%E4%BD%A0%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%99%BE%E5%88%86%E4%B9%8B99%E7%9A%84JS%E4%BB%A3%E7%A0%81.md" class="post-edit-link" title="编辑" rel="noopener" target="_blank"><i class="fa fa-pen-nib"></i></a>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-09-10 17:51:50 / 修改时间：18:03:49" itemprop="dateCreated datePublished" datetime="2022-09-10T17:51:50+08:00">2022-09-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/" itemprop="url" rel="index"><span itemprop="name">学习类</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">前端技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/" itemprop="url" rel="index"><span itemprop="name">Javascript</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="如何移除你项目中-99-的-JS-代码"><a href="#如何移除你项目中-99-的-JS-代码" class="headerlink" title="如何移除你项目中 99% 的 JS 代码"></a>如何移除你项目中 99% 的 JS 代码</h1><p>在前不久的WWC22中，<code>builder.io</code>的CTO <strong>「miško hevery」</strong>（同时也是<code>Angular</code>&#x2F;<code>AngularJS</code>的发明者）发表了一段充满想象力的演讲。-</p>
+<span id="more"></span>
+<p><img src="https://image.cubox.pro/article/2022062223543714822/74256.jpg"></p>
+<p>miško hevery</p>
+<p>在演讲中，他介绍了一款全栈SSR框架 —— <code>Qwik</code>，这款框架号称<strong>「能帮你移除项目中99%的JS代码」</strong>。</p>
+<p><img src="https://image.cubox.pro/article/2022062223543756157/48170.jpg"></p>
+<p>他是如何办到的，本文我们来介绍下<code>Qwik</code>。</p>
+<h2 id="性能差？码农不背锅"><a href="#性能差？码农不背锅" class="headerlink" title="性能差？码农不背锅"></a>性能差？码农不背锅</h2><p>先来聊聊<code>Qwik</code>诞生的背景。</p>
+<p>对于很多<code>2C web</code>应用（比如电商），首屏性能指标关乎用户留存，用户留存关乎赚多少钱。</p>
+<p>所以，应用打开速度会影响赚钱。</p>
+<p>然而，对于前端开发者，首屏性能指标并不容易优化。究其原因，并不是开发者不够努力。</p>
+<p>让我们来看两个性能指标。</p>
+<h3 id="如何优化FCP"><a href="#如何优化FCP" class="headerlink" title="如何优化FCP"></a>如何优化FCP</h3><p><code>FCP</code>（First Contentful Paint，首次内容绘制）测量<strong>「页面从开始加载到页面内容的任何部分在屏幕上完成渲染的时间」</strong>。</p>
+<p>当前<code>web</code>应用普遍采用<strong>「前端框架」</strong>开发，这意味着会引入大量<code>JS</code>代码（框架本身代码、第三方依赖包的代码……）</p>
+<p>从<code>HTML</code>开始解析到最终页面渲染，中间还要经历：</p>
+<ol>
+<li><p>下载框架<code>JS</code>代码</p>
+</li>
+<li><p>执行框架<code>JS</code>代码</p>
+</li>
+<li><p>由框架完成页面渲染</p>
+</li>
+</ol>
+<p>这就导致<code>FCP</code>指标的下降。</p>
+<p>为了优化<code>FCP</code>，框架作者提出了<code>SSR</code>（Server Side Render，服务端渲染），在服务端生成首屏所需<code>HTML</code>，这就为<code>FCP</code>省去了上述三个步骤所需时间。</p>
+<p>但是，<code>TTI</code>指标仍然需要优化。</p>
+<h3 id="如何优化TTI"><a href="#如何优化TTI" class="headerlink" title="如何优化TTI"></a>如何优化TTI</h3><p><code>TTI</code>（Time to Interactive，用户可交互时间）测量<strong>「页面变得完全可交互所需时间」</strong>。</p>
+<p>主要衡量的是从下述1到3所需时间：</p>
+<ol>
+<li><p>首先衡量<code>FCP</code>时间</p>
+</li>
+<li><p>为页面中的元素绑定事件</p>
+</li>
+<li><p>对元素产生交互后，事件响应时间在50ms内</p>
+</li>
+</ol>
+<p>使用<code>SSR</code>后，虽然<code>FCP</code>降低，但是框架<code>hydrate</code>（注水，即框架使页面能够响应交互）所需时间对<code>TTI</code>会有影响。</p>
+<p>可见，性能瓶颈的源头在<code>JS</code>代码。</p>
+<p><code>React18</code>的<code>Selective Hydration</code>通过<strong>「让用户交互的部分优先hydrate」</strong>来优化<code>TTI</code>指标。</p>
+<p>但是，<code>Qwik</code>更极端，他的目标是 —— 干掉所有不必要的<code>JS</code>耗时，这里的耗时包括两部分：</p>
+<ul>
+<li><p><code>JS</code>作为静态资源加载的耗时</p>
+</li>
+<li><p><code>JS</code>运行时的耗时</p>
+</li>
+</ul>
+<h2 id="超超超细粒度hydrate"><a href="#超超超细粒度hydrate" class="headerlink" title="超超超细粒度hydrate"></a>超超超细粒度hydrate</h2><p>如果说传统<code>SSR</code>的粒度是<strong>「整个页面」</strong>。</p>
+<p>那么<code>React18</code>的<code>Selective Hydration</code>的粒度是<strong>「产生交互的组件」</strong>。</p>
+<p>那么<code>Qwik</code>的粒度是<strong>「组件中的某个方法」</strong>。</p>
+<p>举个例子，下面是<code>HelloWorld</code>组件（可以发现，<code>Qwik</code>采用类似<code>React</code>的语法）：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543725346/17211.jpg"></p>
+<p>对应页面渲染效果：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543762376/75612.jpg"></p>
+<p>打开浏览器<code>Network</code>面板，这个页面会有多少<code>JS</code>请求呢？</p>
+<p>由于这是个静态的组件，没有逻辑，所以答案是：没有<code>JS</code>请求。</p>
+<p>再来看看经典的计数器<code>Counter</code>组件，相比<code>HelloWorld</code>，增加了<strong>「点击按钮状态变化的逻辑」</strong>，代码如下：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543710885/57794.jpg"></p>
+<p>对应页面渲染效果：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543744922/75705.jpg"></p>
+<p>打开浏览器<code>Network</code>面板，这个页面会有多少<code>JS</code>请求呢？</p>
+<p>答案还是：没有<code>JS</code>请求。</p>
+<p>注意这两个组件的代码中，定义组件使用的是<code>component$</code>，有个<code>$</code>符号。</p>
+<p>在<code>Counter</code>中，<code>onClick$</code>回调也有个<code>$</code>符号。</p>
+<p>在<code>Qwik</code>中，后缀带<code>$</code>的函数都是<strong>「懒加载」</strong>的。</p>
+<p><code>hydrate</code>的粒度有多细，就取决于<code>$</code>定义的多细。</p>
+<p>比如在<code>Counter</code>中，<code>onClick$</code>带<code>$</code>后缀，那么点击回调是懒加载的，所以首屏渲染不会包含<strong>「点击后的逻辑」</strong>对应的<code>JS</code>代码。</p>
+<p>在点击按钮后，会发起2个<code>JS</code>请求，第一个请求返回的是<strong>「点击后的逻辑」</strong>：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543783855/51820.jpg"></p>
+<p>第2个<code>JS</code>请求返回的是<strong>「组件重新render的逻辑」</strong>：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543754047/53282.jpg"></p>
+<p>这两段代码执行后，<code>Counter</code>变为1。</p>
+<p><img src="https://image.cubox.pro/article/2022062223543718108/51175.jpg"></p>
+<p>审查元素会发现，点击前，<code>button</code> <code>on:click</code>属性中保存了<strong>「逻辑所在的地址」</strong>：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543745118/58832.jpg"></p>
+<p>点击后，会从对应地址下载<code>JS</code>代码，执行对应逻辑。</p>
+<h2 id="从优秀到极致"><a href="#从优秀到极致" class="headerlink" title="从优秀到极致"></a>从优秀到极致</h2><p>是不是觉得已经优化到极致了？还没。</p>
+<p>对于一些在页面中长期存在的、需要<code>JS</code>驱动的模块（比如轮播图），在模块展现前，<strong>「模块对应JS」</strong>不是必要的。</p>
+<p>比如下面这个钟的示例，页面中有个长长的列表，超过一屏高度，在列表底部有个钟。</p>
+<p>下面是列表滚到底的样子：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543769448/20779.jpg"></p>
+<p>在<code>Clock</code>组件的<code>useClientEffect$</code>中定义<strong>「时钟指针摆动的逻辑」</strong>：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543718212/62452.jpg"></p>
+<p><code>Qwik</code>中也存在类似<code>React</code>的<code>useEffect</code>，但在<code>Qwik</code>中这个<code>Hook</code>可以在服务端&#x2F;客户端执行。</p>
+<p>为了区分，<code>useClientEffect</code>是<strong>「只在客户端执行的useEffect」</strong>。</p>
+<p>加了<code>$</code>后缀，代表他是<strong>「懒加载的」</strong>。</p>
+<p>具体效果是：当页面滚动到钟露出之前，<code>useClientEffect$</code>对应<code>JS</code>代码都不会请求。</p>
+<p>当钟露出后，会发起两个<code>JS</code>资源请求：</p>
+<ul>
+<li><p><code>useClientEffect</code>的逻辑</p>
+</li>
+<li><p><code>Clock</code>组件重新渲染的逻辑</p>
+</li>
+</ul>
+<p><img src="https://image.cubox.pro/article/2022062223543722776/11574.jpg"></p>
+<p>如果审查元素，在钟露出前，指针对应元素都是不动的：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543791121/80229.jpg"></p>
+<p>当钟露出，加载并执行<code>JS</code>代码后，才开始执行动效：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543781442/79929.jpg"></p>
+<h2 id="对数据hydrate"><a href="#对数据hydrate" class="headerlink" title="对数据hydrate"></a>对数据hydrate</h2><p>在传统<code>SSR</code>中，数据其实被初始化了两次：</p>
+<ol>
+<li><p>页面首次渲染，此时服务端导出的<code>HTML</code>中已经携带了首屏渲染的数据</p>
+</li>
+<li><p>框架<code>hydrate</code>后，数据再转化为框架内的状态供后续渲染</p>
+</li>
+</ol>
+<p>在<code>Qwik</code>中，页面初始化时会存在<code>type</code>为<code>qwik/json</code>的<code>script</code>标签用于存储<strong>「当前页面中被激活的状态对应数据」</strong>：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543719277/48722.jpg"></p>
+<p>什么叫<strong>「被激活」</strong>呢？</p>
+<p>比如，下面是一篇文章的评论区，这是首屏渲染后的样子：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543758529/15512.jpg"></p>
+<p>这些评论数据会出现在<code>qwik/json</code>保存的数据中么？</p>
+<p>不会，因为没有交互激活他们。</p>
+<p>我们发现，有一条评论被折叠了，点击后会展开这条评论：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543745523/38296.jpg"></p>
+<p>点击这个行为会请求：</p>
+<ul>
+<li><p>点击逻辑对应的<code>JS</code>代码</p>
+</li>
+<li><p>这条评论对应组件的重新渲染逻辑</p>
+</li>
+</ul>
+<p>此时，评论数据才会出现在<code>qwik/json</code>中，因为点击交互激活了这个数据。</p>
+<p>所以在<code>Qwik</code>中，如无必要，数据不会被初始化两次。</p>
+<p><code>HTML</code>中存在<strong>「未激活的数据」</strong>，<code>qwik/json</code>的<code>script</code>标签中保存了<strong>「激活的数据」</strong>，这个特性会带来一个很有意思的效果：</p>
+<p>复制调试工具中<strong>「Elements面板下的DOM结构」</strong>后，再在新页面中粘贴，就能复现<strong>「页面当前的交互状态」</strong>（比如，输入框内仍然保留之前输入的内容）：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543797899/95494.jpg"></p>
+<p>复制红框内的内容</p>
+<p>换做其他框架，只能复现<strong>「页面初始时的状态」</strong>。</p>
+<h2 id="交互时再请求JS不会卡么？"><a href="#交互时再请求JS不会卡么？" class="headerlink" title="交互时再请求JS不会卡么？"></a>交互时再请求JS不会卡么？</h2><p>有同学可能会问，如果在网络不好的情况下，交互时再请求<code>JS</code>代码不会让交互变得卡顿么？</p>
+<p><code>Qwik</code>允许你指定<strong>「哪些组件可能是用户大概率会操作的」</strong>（比如电商应用中，购物车按钮被点击的概率高）。</p>
+<p>这些组件逻辑对应<code>JS</code>代码会<code>prefetch</code>，在不影响首屏渲染的前提下被预请求：</p>
+<p><img src="https://image.cubox.pro/article/2022062223543762124/31648.jpg"></p>
+<p>并且这些组件<code>prefetch</code>的顺序是可以调整的。</p>
+<p>这意味着可以追踪用户行为，以<strong>「用户交互的频率」</strong>为指标，作为组件<code>prefetch</code>优先级的依据，启发式提升应用性能。</p>
+<p>这才是真正的<strong>「以用户为导向」</strong>的性能优化，而且是全自动的。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>当今是个前端框架百花齐放的时代，不同框架都在寻找自己独特的卖点。</p>
+<p><code>Qwik</code>的卖点是：将<code>JS</code>代码的拆分从常见的<strong>「编译时」</strong>（比如<code>webpack</code>分块）、<strong>「运行时」</strong>（比如<code>dynamic import</code>），变为<strong>「交互时」</strong>。</p>
+<p>对<code>JS</code>代码的极致拆分，只为达到一个目的 —— 在首屏渲染时，移除你项目中99%的<code>JS</code>代码。</p>
+<p>你觉得这波操作怎么样？</p>
+<p>- EOF -</p>
+<p>推荐阅读点击标题可跳转</p>
+<p>1、<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA5NjUxMTM2MQ==&mid=2247492704&idx=1&sn=c3ef8ce31bcd74b7473f7c13a80a6828&chksm=90ac508ea7dbd998876d60106081313129315f3504fa0364d4c93725c86e60e61f1b10de08e8&scene=21#wechat_redirect">9.6K Star！可扩展的 JS 富文本编辑框架！</a></p>
+<p>2、<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA5NjUxMTM2MQ==&mid=2247492558&idx=1&sn=68a30ab75e050d17de2049d23ac51d9f&chksm=90ac5720a7dbde366e8742e7689801189c50c89322d44d129b59d6693ae3de9d9e0fd78f95d7&scene=21#wechat_redirect">44 道 JS 难题，做对一半就是高手</a></p>
+<p>3、<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA5NjUxMTM2MQ==&mid=2247492715&idx=1&sn=0c35f7a875dbff4313844a362057d48d&chksm=90ac5085a7dbd993edac0c9d507719b677a0acf1e9c1d025329f12ff83ad41f4a6ee753179d0&scene=21#wechat_redirect">用 CSS 新特性直接实现虚拟列表？JS 往后稍稍</a></p>
+<p>觉得本文对你有帮助？请分享给更多人</p>
+<p>关注「大前端技术之路」加星标，提升前端技能</p>
+<p>点赞和在看就是最大的支持❤️</p>
+<p><a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzA5NjUxMTM2MQ==&mid=2247492786&idx=1&sn=d3981825085c5a6dc5e23941b4f3ca22&chksm=90ac505ca7dbd94a9ae6ddca9a38cc71baf3e53d106eac56232df13fba8f68a3a1ae06b9dfee&mpshare=1&scene=1&srcid=0716Xct8wV0rb2IS3iKN9cyL&sharer_sharetime=1662801976415&sharer_shareid=f9049818211070a874d51073efa3d8bf#rd">查看原网页: mp.weixin.qq.com</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/atom.xml">
+          <span class="icon">
+            <i class="fa fa-rss"></i>
+          </span>
+
+          <span class="label">RSS</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%87%8F%E5%B0%91%E6%B8%B2%E6%9F%93/" rel="tag"># 减少渲染</a>
+              <a href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" rel="tag"># 性能优化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E8%87%AA%E5%8A%A8%E5%8C%96/%E8%A7%A3%E6%94%BE%E5%8F%8C%E6%89%8B%E7%9A%84%E6%95%88%E7%8E%87%E7%A5%9E%E5%99%A8%EF%BC%8C%E8%83%BD%E8%87%AA%E5%8A%A8%E7%9A%84%E5%92%B1%E7%BB%9D%E4%B8%8D%E6%89%8B%E5%8A%A8%EF%BC%81/" rel="prev" title="解放双手的效率神器，能自动的咱绝不手动！">
+                  <i class="fa fa-chevron-left"></i> 解放双手的效率神器，能自动的咱绝不手动！
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/10/%E5%AD%A6%E4%B9%A0%E7%B1%BB/%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF/Javascript/localStorage%E7%9A%84%E9%AB%98%E9%98%B6%E7%94%A8%E6%B3%95/" rel="next" title="localStorage的高阶用法">
+                  localStorage的高阶用法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">海之领域</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">52k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:34</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
