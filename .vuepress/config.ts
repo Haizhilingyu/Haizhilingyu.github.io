@@ -3,17 +3,19 @@ import type { DefaultThemeOptions } from "vuepress";
 import recoTheme from "vuepress-theme-reco";
 
 export default defineUserConfig({
-  title: "知识分享",
-  description: "席维海的知识分享",
-  head:[["script",{"src":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665","async":true,"crossorigin":"anonymous"}],],
+  title: "双倍爱意",
+  description: "一个双胞胎家庭的幸福生活",
+  head: [
+    ["script", { "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665", "async": true, "crossorigin": "anonymous" }],
+  ],
   theme: recoTheme({
     style: "@vuepress-reco/style-default",
     logo: "/logo.png",
     author: "席维海",
     authorAvatar: "/head.png",
-    docsRepo: "https://github.com/vuepress-reco/vuepress-theme-reco-next",
-    docsBranch: "main",
-    docsDir: "example",
+    // docsRepo: "https://github.com/vuepress-reco/vuepress-theme-reco-next",
+    // docsBranch: "main",
+    // docsDir: "example",
     lastUpdatedText: "",
     // series 为原 sidebar
     series: {
