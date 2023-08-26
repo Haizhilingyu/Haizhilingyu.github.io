@@ -13,8 +13,10 @@ bannerBrand:
   buttons:
     - { text: Guide, link: '/docs/guide/introduce' }
     - { text: Default Style, link: '/docs/style-default-api/introduce', type: 'plain' }
-  # socialLinks:
-  #   - { icon: 'LogoGithub', link: 'https://github.com/vuepress-reco/vuepress-theme-reco' }
+  socialLinks:
+    - { icon: 'LogoGithub', link: 'https://github.com/haizhilingyu' }
+    - { icon: 'LogoTwitter', link: 'https://twitter.com/haizhilingyu?ref_src=twsrc%5Etfw' }
+    - { icon: 'LogoWechat', link: 'weixin://dl/chat/zxiweihai' }
 blog:
   socialLinks:
     - { icon: 'LogoGithub', link: 'https://github.com/haizhilingyu' }
