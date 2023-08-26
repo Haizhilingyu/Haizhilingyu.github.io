@@ -2,4 +2,3 @@
 .vuepress/.temp
 .vuepress/dist
 node_modules
-.yarn
