@@ -5,6 +5,7 @@ import recoTheme from "vuepress-theme-reco";
 export default defineUserConfig({
   title: "知识分享",
   description: "席维海的知识分享",
+  head:[["script",{"src":"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665","async":true,"crossorigin":"anonymous"}],],
   theme: recoTheme({
     style: "@vuepress-reco/style-default",
     logo: "/logo.png",
