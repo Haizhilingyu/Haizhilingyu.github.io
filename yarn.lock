@@ -7713,7 +7713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.3.4":
+"vue@npm:^3.3.4, vue@npm:latest":
   version: 3.3.4
   resolution: "vue@npm:3.3.4"
   dependencies:
@@ -7730,6 +7730,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vuepress-theme-reco-demo@workspace:."
   dependencies:
+    vue: latest
     vuepress: 2.0.0-beta.66
     vuepress-theme-reco: 2.0.0-beta.67
   languageName: unknown
