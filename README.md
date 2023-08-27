@@ -11,7 +11,7 @@ bannerBrand:
   description: 一个双胞胎家庭的幸福生活
   tagline: 作为一位充满热情和创造力的软件开发人员，我善于解决问题，构建高效的应用程序。拥有广泛的技术知识和经验，擅长前后端开发和数据库管理。我积极参与团队合作，不断学习并应用最新技术。作为父亲，家庭对我至关重要，两个宝贝儿子带给我无限快乐和责任感。我是一位乐观、勤奋的开发者，相信技术可以改变世界。✨💻👨‍💻😊
   buttons:
-    - { text: "查看博客", link: '/categories/shenghuo/1/' }
+    - { text: "查看博客", link: '/posts' }
     - { text: "关于我", link: '/docs/about', type: 'plain' }
   socialLinks:
     - { icon: 'LogoGithub', link: 'https://github.com/haizhilingyu' }
