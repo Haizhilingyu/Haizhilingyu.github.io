@@ -47,9 +47,9 @@ export default defineUserConfig({
       ],
     },
     navbar: [
-      { text: "Home", link: "/" },
-      { text: "Categories", link: "/categories/shenghuo/1/" },
-      { text: "Tags", link: "/tags/shenghuo/1/" },
+      { text: "首页", link: "/" },
+      { text: "分类", link: "/categories/shenghuo/1/" },
+      { text: "标签", link: "/tags/shenghuo/1/" },
     ],
     // bulletin: {
     //   body: [

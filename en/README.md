@@ -12,7 +12,7 @@ bannerBrand:
   tagline: As a passionate and creative software developer, I am good at solving problems and building efficient applications. Has extensive technical knowledge and experience, specializing in front-end and back-end development and database management. I am actively involved in teamwork, constantly learning and applying the latest technology. As a father, family is very important to me, and my two precious sons bring me infinite joy and responsibility. I am an optimistic, hardworking developer who believes that technology can change the world. ✨💻👨‍💻😊
   buttons:
     - { text: View, link: '/categories/shenghuo/1/' }
-    # - { text: Default Style, link: '/docs/style-default-api/introduce', type: 'plain' }
+    - { text: "About", link: '/docs/about', type: 'plain' }
   socialLinks:
     - { icon: 'LogoGithub', link: 'https://github.com/haizhilingyu' }
     - { icon: 'LogoTwitter', link: 'https://twitter.com/haizhilingyu?ref_src=twsrc%5Etfw' }
