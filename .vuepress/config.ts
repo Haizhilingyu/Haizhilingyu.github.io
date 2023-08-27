@@ -3,10 +3,26 @@ import type { DefaultThemeOptions } from "vuepress";
 import recoTheme from "vuepress-theme-reco";
 
 export default defineUserConfig({
-  title: "双倍爱意",
-  description: "一个双胞胎家庭的幸福生活",
+  locales:{
+    '/': {
+      lang: 'zh-CN',
+      title: '双倍爱意',
+      description: '一个双胞胎家庭的幸福生活'
+    },
+    '/en/':{
+      lang: 'en-US',
+      title: 'More Love',
+      description: 'A happy life for a twin family. '
+    }
+  },
   head: [
     ["script", { "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665", "async": true, "crossorigin": "anonymous" }],
+    ["script", { "src": "https://www.googletagmanager.com/gtag/js?id=G-Z578CQMF4N", "async": true, "crossorigin": "anonymous" }],
+    ["script", { },`window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-Z578CQMF4N');`],
   ],
   theme: recoTheme({
     style: "@vuepress-reco/style-default",
@@ -32,15 +48,8 @@ export default defineUserConfig({
     },
     navbar: [
       { text: "Home", link: "/" },
-      { text: "Categories", link: "/categories/reco/1/" },
-      { text: "Tags", link: "/tags/tag1/1/" },
-      {
-        text: "Docs",
-        children: [
-          { text: "vuepress-reco", link: "/docs/theme-reco/theme" },
-          { text: "vuepress-theme-reco", link: "/blogs/other/guide" },
-        ],
-      },
+      { text: "Categories", link: "/categories/shenghuo/1/" },
+      { text: "Tags", link: "/tags/shenghuo/1/" },
     ],
     // bulletin: {
     //   body: [
