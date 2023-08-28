@@ -16,7 +16,7 @@ export default defineUserConfig({
     }
   },
   head: [
-    ["script", { "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665", "async": true, "crossorigin": "anonymous" }],
+    //["script", { "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665", "async": true, "crossorigin": "anonymous" }],
     ["script", { "src": "https://www.googletagmanager.com/gtag/js?id=G-Z578CQMF4N", "async": true, "crossorigin": "anonymous" }],
     ["script", { },`window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -33,22 +33,27 @@ export default defineUserConfig({
     // docsBranch: "main",
     // docsDir: "example",
     lastUpdatedText: "",
-    // series 为原 sidebar
-    series: {
-      "/docs/theme-reco/": [
-        {
-          text: "module one",
-          children: ["home", "theme"],
-        },
-        {
-          text: "module two",
-          children: ["api", "plugin"],
-        },
-      ],
-    },
     navbar: [
       { text: "首页", icon: 'Home', link: "/" },
-      { text: "博客",icon: 'Document', link: "/posts" },
+      { text: "博客",icon: 'Blog', link: "/posts" },
+	  {
+		text: '文档',
+		icon: 'Document',
+		children: [
+		  {
+			text: '语言语法',
+			children: [
+			  { text: 'Markdown', link: '/docs/skill/markdown' },
+			],
+		  },
+		  {
+			text: '常用命令',
+			children: [
+			  { text: 'git', link: '/docs/skill/git' },
+			],
+		  },
+		],
+	  },
     ],
     // bulletin: {
     //   body: [
