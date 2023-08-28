@@ -50,6 +50,7 @@ export default defineUserConfig({
 			text: '常用命令',
 			children: [
 			  { text: 'git', link: '/docs/skill/git' },
+			  { text: 'ssh', link: '/docs/skill/ssh' },
 			],
 		  },
 		],
