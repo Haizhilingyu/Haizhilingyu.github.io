@@ -14,6 +14,5 @@
     "vue": "latest",
     "vuepress": "2.0.0-beta.66",
     "vuepress-theme-reco": "2.0.0-beta.67"
-  },
-  "packageManager": "yarn@3.6.3"
+  }
 }
