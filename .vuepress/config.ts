@@ -3,13 +3,13 @@ import type { DefaultThemeOptions } from "vuepress";
 import recoTheme from "vuepress-theme-reco";
 
 export default defineUserConfig({
-  locales:{
+  locales: {
     '/': {
       lang: 'zh-CN',
       title: '双倍爱意',
       description: '一个双胞胎家庭的幸福生活'
     },
-    '/en/':{
+    '/en/': {
       lang: 'en-US',
       title: 'More Love',
       description: 'A happy life for a twin family. '
@@ -18,7 +18,7 @@ export default defineUserConfig({
   head: [
     //["script", { "src": "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1705241395930665", "async": true, "crossorigin": "anonymous" }],
     ["script", { "src": "https://www.googletagmanager.com/gtag/js?id=G-Z578CQMF4N", "async": true, "crossorigin": "anonymous" }],
-    ["script", { },`window.dataLayer = window.dataLayer || [];
+    ["script", {}, `window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   
@@ -35,33 +35,33 @@ export default defineUserConfig({
     lastUpdatedText: "",
     navbar: [
       { text: "首页", icon: 'Home', link: "/" },
-      { text: "博客",icon: 'Blog', link: "/posts" },
-	  {
-		text: '文档',
-		icon: 'Document',
-		children: [
+      { text: "随笔", icon: 'Blog', link: "/posts" },
       {
-        text: '工具',
+        text: '文档',
+        icon: 'Document',
         children: [
-          { text: '杜威十进制分类法', link: '/docs/cat' },
+          {
+            text: '工具',
+            children: [
+              { text: '杜威十进制分类法', link: '/docs/cat' },
+            ],
+          },
+          {
+            text: '语言语法',
+            children: [
+              { text: 'Markdown', link: '/docs/skill/markdown' },
+            ],
+          },
+          {
+            text: '常用命令',
+            children: [
+              { text: 'shell', link: '/docs/skill/shell' },
+              { text: 'git', link: '/docs/skill/git' },
+              { text: 'ssh', link: '/docs/skill/ssh' },
+            ],
+          },
         ],
       },
-		  {
-			text: '语言语法',
-			children: [
-			  { text: 'Markdown', link: '/docs/skill/markdown' },
-			],
-		  },
-		  {
-			text: '常用命令',
-			children: [
-		    { text: 'shell', link: '/docs/skill/shell' },
-			  { text: 'git', link: '/docs/skill/git' },
-			  { text: 'ssh', link: '/docs/skill/ssh' },
-			],
-		  },
-		],
-	  },
     ],
     // bulletin: {
     //   body: [
