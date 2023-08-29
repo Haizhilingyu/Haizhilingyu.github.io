@@ -40,6 +40,12 @@ export default defineUserConfig({
 		text: '文档',
 		icon: 'Document',
 		children: [
+      {
+        text: '工具',
+        children: [
+          { text: '杜威十进制分类法', link: '/docs/cat' },
+        ],
+      },
 		  {
 			text: '语言语法',
 			children: [
@@ -49,7 +55,7 @@ export default defineUserConfig({
 		  {
 			text: '常用命令',
 			children: [
-		          { text: 'shell', link: '/docs/skill/shell' },
+		    { text: 'shell', link: '/docs/skill/shell' },
 			  { text: 'git', link: '/docs/skill/git' },
 			  { text: 'ssh', link: '/docs/skill/ssh' },
 			],
