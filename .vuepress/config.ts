@@ -62,6 +62,7 @@ export default defineUserConfig({
           },
         ],
       },
+      { text: "书签", icon: 'Collection', link: "/docs/bookmark" },
     ],
     // bulletin: {
     //   body: [
