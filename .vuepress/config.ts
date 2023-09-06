@@ -57,7 +57,6 @@ export default defineUserConfig({
             children: [
               { text: 'shell', link: '/docs/skill/shell' },
               { text: 'git', link: '/docs/skill/git' },
-              { text: 'ssh', link: '/docs/skill/ssh' },
             ],
           },
         ],

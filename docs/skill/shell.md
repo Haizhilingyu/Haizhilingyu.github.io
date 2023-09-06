@@ -4,6 +4,55 @@ date: 2023/08/29
 ---
 
 # 常用shell命令
+
+## ssh登录
+
+需自行修改user为登录用户，host为登录服务器ip，特殊端口还需要修改22为指定端口
+
+```shell
+ssh user@host -p 22
+```
+
+
+
+## 生成私钥
+
+执行下面命令一路回车
+
+```shell
+ssh-keygen -t rsa -b 4096
+```
+
+推送公钥至目标服务器，需自行修改user和host
+
+```shell
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
+```
+
+查看公钥
+
+```shell
+cat ~/.ssh/id_rsa.pub
+```
+
+## 传输文件命令
+
+### 获取服务器文件命令
+```shell
+scp root@10.2.15.220:/root/xwh/111.zip ./
+```
+### 发送文件到服务器目录命令
+```shell
+scp ./111.zip root@10.2.15.220:/root/xwh/
+```
+
+## Centos
+
+### 查看Centos的版本号
+```shell
+cat /etc/centos-release
+```
+
 ## 通用
 
 ### 文件和目录操作
@@ -62,9 +111,4 @@ date: 2023/08/29
 
 这只是一些常见的Linux命令示例列表，还有很多其他命令可供使用。可以使用`man`命令来查看每个命令的详细说明和用法。
 
-## Centos
 
-### 查看Centos的版本号
-```shell
-cat /etc/centos-release
-```
