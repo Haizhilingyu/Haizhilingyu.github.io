@@ -43,11 +43,20 @@ date: 2023-09-06 13:49
 
 [FlexGanttFX – DLSC ↗](http://dlsc.com/products/flexganttfx/)
 
+[简单实用国产jQuery UI框架 - DWZ富客户端框架(J-UI.com) ↗](http://jui.org/)
+
+[实时监控、直播流、流媒体、视频网站开发方案设计简要 - CSDN博客 ↗](http://blog.csdn.net/eguid_1/article/details/51725970)
+
+
 ### 040 - 软件工具
 
 [Maven Repository: Search/Browse/Explore ↗](https://mvnrepository.com/)
 
 [Gitpod - Always ready to code ↗](https://gitpod.io/)
+
+[Mac玩儿法 – 应用提高设备生产力 ↗](https://www.waerfa.com/)
+
+[Vue-Layout - 可视化布局 ↗](https://jaweii.github.io/Vue-Layout/dist/#/)
 
 ### 050 - 信息安全
 
@@ -63,7 +72,17 @@ date: 2023-09-06 13:49
 
 [IP 库付费计划_最专业的 IP 地址库_IPIP.NET ↗](https://www.ipip.net/product/ip.html)
 
-[国家信息安全漏洞共享平台 ↗](https://www.cnnvd.org.cn/)
+[在线工具 ↗](http://tool.oschina.net/)
+
+[ProcessOn - 免费在线作图，实时协作 ↗](https://www.processon.com/tour)
+
+[UEditor - 首页 ↗](http://ueditor.baidu.com/website/)
+
+[PS_在线PS_ps下载_photoshop_在线ps照片 ↗](http://www.webps.cn/)
+
+[W3School在线测试工具 V2 ↗](http://www.w3school.com.cn/tiy/t.asp?f=jquery_dom_empty)
+
+[Our Data | FiveThirtyEight 开放数据集 ↗](https://data.fivethirtyeight.com/)
 
 ### 070 - 编程语言
 
