@@ -33,6 +33,8 @@ export default defineUserConfig({
     // docsBranch: "main",
     // docsDir: "example",
     lastUpdatedText: "",
+    autoSetBlogCategories: true,
+    // 自动将分类和标签添加至头部导航条
     navbar: [
       { text: "首页", icon: 'Home', link: "/" },
       { text: "随笔", icon: 'Blog', link: "/posts" },
@@ -41,9 +43,10 @@ export default defineUserConfig({
         icon: 'Document',
         children: [
           {
-            text: '工具',
+            text: '随笔',
             children: [
-              { text: '杜威十进制分类法', link: '/docs/cat' },
+              { text: '分类', link: '/categories/100biancheng/102houduankaifa/1/' },
+              { text: '标签', link: '/tags/gongzuo/1/' },
             ],
           },
           {
