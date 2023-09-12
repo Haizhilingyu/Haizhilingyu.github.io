@@ -70,3 +70,42 @@ Java接口网络文件下载示例
 
 
 ## Java文件夹流式压缩下载
+
+
+
+实现实时创建压缩流并将文件夹内文件写入压缩流
+
+```java
+    @GetMapping("/export-business")
+    public void exportBusiness(@RequestParam String id, HttpServletResponse response) throws IOException {
+        Optional<BusinessInfo> optionalBusinessInfo = businessInfoRepository.findById(id, EXPORT_FETCHER);
+        if (optionalBusinessInfo.isPresent()) {
+            BusinessInfo businessInfo = optionalBusinessInfo.get();
+            String fileName = businessInfo.name() + "-" + System.currentTimeMillis() + ".zip";
+            // 解决下载文件中文名乱码的问题
+            response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            ZipOutputStream zos = new ZipOutputStream(response.getOutputStream());
+            
+            // 添加第一个文件
+            ZipEntry metaData = new ZipEntry("test1.json");
+            zos.putNextEntry(metaData);
+            InputStream in = new FileInputStream("test1.json")
+            FileUtils.copyFile(in, zos);
+            zos.closeEntry();
+            zos.flush();
+            
+            
+            // 添加第二个文件
+            ZipEntry test2 = new ZipEntry("test2/test1.json");
+            zos.putNextEntry(test2);
+            InputStream in2 = new FileInputStream("test2/test1.json")
+            FileUtils.copyFile(in2, zos);
+            zos.closeEntry();
+            zos.flush();
+
+            
+            zos.close();
+        }
+    }
+```
+

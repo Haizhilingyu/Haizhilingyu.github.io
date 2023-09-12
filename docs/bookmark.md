@@ -21,6 +21,11 @@ date: 2023-09-06 13:49
 
 [InfoQ - 促进软件开发及相关领域知识与创新的传播-极客邦 ↗](https://www.infoq.cn/)
 
+
+[知乎 - 与世界分享你的知识、经验和见解 ↗](https://www.zhihu.com/) 
+
+[SegmentFault 思否 ↗](https://segmentfault.com/)
+
 ### 020 - 服务器
 
 [VPS大全 - 你的VPS仓库,提供VPS列表, 库存, 机房, 价格等信息 ↗](https://xps.1688.com/)
@@ -110,11 +115,9 @@ date: 2023-09-06 13:49
 
 [腾讯视频-中国领先的在线视频媒体平台,海量高清视频在线观看 ↗](https://v.qq.com/)
 
-## 300 - 知识问答
+## 300 - 个人产品
 
-[知乎 - 与世界分享你的知识、经验和见解 ↗](https://www.zhihu.com/) 
-
-[SegmentFault 思否 ↗](https://segmentfault.com/)
+[方糖全栈路线图 ↗](http://road.ftqq.com/) 
 
 ## 400 - 电商网站
 
