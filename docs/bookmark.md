@@ -4,7 +4,8 @@ date: 2023-09-06 13:49
 ---
 
 # 收集书签
-
+docker run -tid -p 3316:22 -p 5900:5900 -p 5901:5901 --network=host --name displaytest_container --privileged=true ubuntu:23.04 /bin/bash
+docker pull ubuntu:23.04
 ## 000 - 计算机
 
 ### 010 - 技术论坛
