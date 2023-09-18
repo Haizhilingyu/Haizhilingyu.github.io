@@ -1,5 +1,5 @@
 ---
-title: 简单创建gnuradio模块
+title: 简单创建gnuradio的python模块
 date: 2023-09-13 13:22
 tags:
  - 工作
@@ -11,7 +11,7 @@ categories:
 
 
 
-# 简单创建gnuradio模块
+# 简单创建gnuradio的python模块
 
 
 
@@ -21,19 +21,19 @@ categories:
 
 GUN Radio安装版本：radioconda-2023.07.26-Windows-x86_64
 
-安装C++开发环境: [Windows10下配置CMake+Make+Cpp环境](./Windows10下配置CMake+Make+Cpp环境.html)
+因python版也需要c++环境，安装C++开发环境: [Windows10下配置CMake+Make+Cpp环境](./Windows10下配置CMake+Make+Cpp环境.html)
 
 
 
 ## 创建模块
 
-使用`.\radioconda\Scripts\gr_modtool.exe newmod jztofreqjson`命令创建一个空的名为`jztofreqjson`的GNU Radio模块
+使用`.\radioconda\Scripts\gr_modtool.exe newmod jzfreqjsonpython`命令创建一个空的名为`jzfreqjsonpython`的GNU Radio模块
 
 ## 添加模块
 
 
 
-使用`.\radioconda\Scripts\gr_modtool.exe add jztofreqjson`命令添加`jztofreqjson`模块到GNU Radio
+使用`.\radioconda\Scripts\gr_modtool.exe add jzfreqjsonpython`命令添加`jzfreqjsonpython`模块到GNU Radio
 
 操作配置和修改文件内容参考[官网文档](https://wiki.gnuradio.org/index.php?title=Creating_C%2B%2B_OOT_with_gr-modtool)
 
@@ -47,40 +47,42 @@ cmake ..
 
 
 
-### Could not find a package configuration file provided by "Gnuradio" (requested version 3.10) with any of the following names:
+### ninja: fatal: CreateProcess: 拒绝访问。
 
 #### 错误提示
 
 ```
-D:\Users\0461\block\gr-jztofreqjson\build>cmake ..
--- Building for: Ninja
--- The CXX compiler identification is GNU 13.1.0
+(base) PS D:\Users\0461\block\gr-jzfreqjsonpython\build> cmake ..
+-- The CXX compiler identification is unknown
 -- The C compiler identification is GNU 13.1.0
 -- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: D:/msys64/mingw64/bin/c++.exe - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: D:/msys64/mingw64/bin/cc.exe - skipped
--- Detecting C compile features
--- Detecting C compile features - done
-CMake Error at CMakeLists.txt:33 (find_package):
-  By not providing "FindGnuradio.cmake" in CMAKE_MODULE_PATH this project has
-  asked CMake to find a package configuration file provided by "Gnuradio",
-  but CMake did not find one.
+-- Detecting CXX compiler ABI info - failed
+-- Check for working CXX compiler: D:/msys64/mingw64/bin/c++.exe
+-- Check for working CXX compiler: D:/msys64/mingw64/bin/c++.exe - broken
+CMake Error at D:/msys64/mingw64/share/cmake/Modules/CMakeTestCXXCompiler.cmake:60 (message):
+  The C++ compiler
 
-  Could not find a package configuration file provided by "Gnuradio"
-  (requested version 3.10) with any of the following names:
+    "D:/msys64/mingw64/bin/c++.exe"
 
-    GnuradioConfig.cmake
-    gnuradio-config.cmake
+  is not able to compile a simple test program.
 
-  Add the installation prefix of "Gnuradio" to CMAKE_PREFIX_PATH or set
-  "Gnuradio_DIR" to a directory containing one of the above files.  If
-  "Gnuradio" provides a separate development package or SDK, be sure it has
-  been installed.
+  It fails with the following output:
+
+    Change Dir: D:/Users/0461/block/gr-jzfreqjsonpython/build/CMakeFiles/CMakeScratch/TryCompile-8je5q3
+
+    Run Build Command(s):C:/ProgramData/anaconda3/Library/bin/ninja.exe -v cmTC_9e4d2 &&
+    CreateProcess failed. Command attempted:
+    "D:\msys64\mingw64\bin\c++.exe    -o CMakeFiles\cmTC_9e4d2.dir\testCXXCompiler.cxx.obj -c D:\Users\0461\block\gr-jzfreqjsonpython\build\CMakeFiles\CMakeScratch\TryCompile-8je5q3\testCXXCompiler.cxx"
+    ninja: fatal: CreateProcess: 拒绝访问。
+
+
+
+
+
+
+  CMake will not be able to correctly generate this project.
+Call Stack (most recent call first):
+  CMakeLists.txt:18 (project)
 
 
 -- Configuring incomplete, errors occurred!

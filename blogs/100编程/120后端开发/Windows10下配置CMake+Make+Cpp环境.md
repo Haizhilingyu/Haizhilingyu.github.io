@@ -1,3 +1,12 @@
+---
+title: Windows10下配置CMake+Make+Cpp环境
+date: 2023-09-08 14:04
+tags:
+ - CMake
+ - Windows10
+categories:
+ - 工作
+---
 Windows10下配置CMake+Make+Cpp环境
 ============================
 
