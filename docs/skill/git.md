@@ -7,6 +7,39 @@ date: 2023/08/28
 
 # 常用git命令
 
+
+
+## 设置git用户
+
+```shell
+git config --global user.name "hai"
+git config --global user.email "haizhilingyu@gmail.com"
+```
+## 变基拉取
+
+```shell
+git pull --rebase
+```
+
+## 全局设置pull/push自动变基拉取
+
+```shell
+git config --global pull.rebase true
+git config --global rebase.autoStash true
+```
+
+## 回退单个提交文件
+
+```shell
+git reset "513a237a9c52c76460bb0b9c40e64e321604d0cf" yarn.lock
+```
+
+格式：
+
+git reset "commit ID" filepath
+
+即reset 后跟commit的id 再跟文件路径
+
 ## 仓库操作
 
 - `git init`：初始化一个新的Git仓库
@@ -51,31 +84,6 @@ date: 2023/08/28
 
 这只是一些常见的Git命令示例列表，还有很多其他命令可供使用。可以使用`git help`命令来查看每个命令的详细说明和用法。
 
-## 变基拉取
 
-```shell
-git pull --rebase
-```
-
-全局设置pull/push自动变基拉取
-
-```shell
-git config --global pull.rebase true
-git config --global rebase.autoStash true
-```
-
-
-
-## 回退单个提交文件
-
-```shell
-git reset "513a237a9c52c76460bb0b9c40e64e321604d0cf" yarn.lock
-```
-
-格式：
-
-git reset "commit ID" filepath
-
-即reset 后跟commit的id 再跟文件路径
 
 ## ...待添加
